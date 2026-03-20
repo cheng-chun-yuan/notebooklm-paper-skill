@@ -1,30 +1,30 @@
 [
   {
-    "id": "P10-01",
+    "id": "P07-01",
     "description": "v2-refined.md exists and is non-empty",
     "check": "file_nonempty",
     "params": {"filepath": "drafts/v2-refined.md"}
   },
   {
-    "id": "P10-02",
+    "id": "P07-02",
     "description": "v2-changelog.md exists and is non-empty",
     "check": "file_nonempty",
     "params": {"filepath": "drafts/v2-changelog.md"}
   },
   {
-    "id": "P10-03",
+    "id": "P07-03",
     "description": "Changelog documents reviewer responses",
     "check": "file_contains",
     "params": {"filepath": "drafts/v2-changelog.md", "pattern": "Reviewer"}
   },
   {
-    "id": "P10-04",
+    "id": "P07-04",
     "description": "All 7 paper sections present in v2",
     "check": "file_contains",
     "params": {"filepath": "drafts/v2-refined.md", "pattern": "Conclusion"}
   },
   {
-    "id": "P10-05",
+    "id": "P07-05",
     "description": "Remaining issues documented",
     "check": "file_contains",
     "params": {"filepath": "drafts/v2-changelog.md", "pattern": "Remaining"}

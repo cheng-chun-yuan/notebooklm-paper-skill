@@ -1,36 +1,36 @@
 [
   {
-    "id": "P5-01",
+    "id": "P03-01",
     "description": "architecture.md exists and is non-empty",
     "check": "file_nonempty",
     "params": {"filepath": "architecture.md"}
   },
   {
-    "id": "P5-02",
+    "id": "P03-02",
     "description": "System overview section present",
     "check": "file_contains",
     "params": {"filepath": "architecture.md", "pattern": "## System Overview"}
   },
   {
-    "id": "P5-03",
+    "id": "P03-03",
     "description": "At least 3 components defined",
     "check": "file_section_count",
     "params": {"filepath": "architecture.md", "heading_prefix": "### ", "min_count": 3}
   },
   {
-    "id": "P5-04",
+    "id": "P03-04",
     "description": "Component-to-gap mapping present",
     "check": "file_contains",
     "params": {"filepath": "architecture.md", "pattern": "Component-to-Gap"}
   },
   {
-    "id": "P5-05",
+    "id": "P03-05",
     "description": "Novel vs adapted separation present",
     "check": "file_contains",
     "params": {"filepath": "architecture.md", "pattern": "## Novel vs Adapted"}
   },
   {
-    "id": "P5-06",
+    "id": "P03-06",
     "description": "Assumptions and constraints documented",
     "check": "file_contains",
     "params": {"filepath": "architecture.md", "pattern": "Assumptions"}

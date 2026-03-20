@@ -11,15 +11,21 @@ Usage:
 """
 
 import json
+import os
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+# Ensure project root is on sys.path for scripts.config import
+_PROJECT_ROOT = Path(__file__).parent.parent.parent
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+
+from scripts.config import DATA_DIR, PROJECTS_DIR, SKILL_DIR, get_active_project
+
 SCRIPT_DIR = Path(__file__).parent
 CRITERIA_DIR = SCRIPT_DIR / "criteria"
-SKILL_DIR = SCRIPT_DIR.parent.parent
-DATA_DIR = Path.home() / ".notebooklm-paper-skill"
-PROJECTS_DIR = DATA_DIR / "projects"
 
 # Phase name mapping
 PHASE_NAMES = {
@@ -47,16 +53,10 @@ PHASE_ARTIFACTS = {
 
 
 def get_active_project_dir() -> Path | None:
-    if not PROJECTS_DIR.exists():
+    project = get_active_project()
+    if not project:
         return None
-    for pf in PROJECTS_DIR.glob("*/project.json"):
-        try:
-            project = json.loads(pf.read_text())
-            if project.get("active"):
-                return pf.parent
-        except (json.JSONDecodeError, KeyError):
-            continue
-    return None
+    return PROJECTS_DIR / project["name"]
 
 
 def load_criteria(phase: str) -> list[dict]:
@@ -64,7 +64,17 @@ def load_criteria(phase: str) -> list[dict]:
     if not criteria_file.exists():
         print(f"No criteria file for phase {phase}: {criteria_file}")
         return []
-    return json.loads(criteria_file.read_text())
+
+    criteria = json.loads(criteria_file.read_text())
+
+    # Validate on load and print warnings (non-blocking)
+    errors = validate_criteria_file(phase)
+    if errors:
+        print(f"WARNING: Validation issues in phase-{phase}.json:")
+        for err in errors:
+            print(f"  - {err}")
+
+    return criteria
 
 
 def check_file_exists(project_dir: Path, filepath: str) -> bool:
@@ -80,7 +90,10 @@ def check_file_contains(project_dir: Path, filepath: str, pattern: str) -> bool:
     f = project_dir / filepath
     if not f.exists():
         return False
-    return pattern.lower() in f.read_text().lower()
+    try:
+        return pattern.lower() in f.read_text().lower()
+    except UnicodeDecodeError:
+        return False
 
 
 def check_file_section_count(project_dir: Path, filepath: str,
@@ -88,7 +101,10 @@ def check_file_section_count(project_dir: Path, filepath: str,
     f = project_dir / filepath
     if not f.exists():
         return False
-    content = f.read_text()
+    try:
+        content = f.read_text()
+    except UnicodeDecodeError:
+        return False
     count = content.count(heading_prefix)
     return count >= min_count
 
@@ -113,7 +129,10 @@ def check_word_count(project_dir: Path, filepath: str,
     f = project_dir / filepath
     if not f.exists():
         return False
-    words = len(f.read_text().split())
+    try:
+        words = len(f.read_text().split())
+    except UnicodeDecodeError:
+        return False
     if max_words > 0:
         return min_words <= words <= max_words
     return words >= min_words
@@ -128,6 +147,85 @@ CHECK_FUNCTIONS = {
     "json_field": check_json_field,
     "word_count": check_word_count,
 }
+
+# JSON schema for criteria validation
+CRITERIA_SCHEMA = {
+    "required_fields": ["id", "description", "check", "params"],
+    "id_pattern": r"^P\d{2}-\d{2}$",
+    "valid_checks": list(CHECK_FUNCTIONS.keys()),
+    "required_params": {
+        "file_exists": ["filepath"],
+        "file_nonempty": ["filepath"],
+        "file_contains": ["filepath", "pattern"],
+        "file_section_count": ["filepath", "heading_prefix", "min_count"],
+        "json_field": ["filepath", "field"],
+        "word_count": ["filepath", "min_words"],
+    },
+}
+
+
+def validate_criterion(criterion: dict) -> list[str]:
+    """Validate a single criterion dict. Returns list of error messages (empty if valid)."""
+    errors: list[str] = []
+
+    # Check required fields
+    for field in CRITERIA_SCHEMA["required_fields"]:
+        if field not in criterion:
+            errors.append(f"Missing required field: '{field}'")
+
+    # If id present, check pattern
+    cid = criterion.get("id", "")
+    if cid and not re.match(CRITERIA_SCHEMA["id_pattern"], cid):
+        errors.append(f"Invalid id format '{cid}': must match {CRITERIA_SCHEMA['id_pattern']}")
+
+    # If description present, check non-empty
+    desc = criterion.get("description", "")
+    if "description" in criterion and not desc.strip():
+        errors.append("Description must be a non-empty string")
+
+    # Check check type is known
+    check_type = criterion.get("check", "")
+    if check_type and check_type not in CHECK_FUNCTIONS:
+        errors.append(f"Unknown check type: '{check_type}'")
+
+    # Validate params has required keys for the check type
+    params = criterion.get("params")
+    if params is not None and check_type in CRITERIA_SCHEMA["required_params"]:
+        required_keys = CRITERIA_SCHEMA["required_params"][check_type]
+        for key in required_keys:
+            if key not in params:
+                errors.append(f"Check '{check_type}' requires param '{key}'")
+
+    return errors
+
+
+def validate_criteria_file(phase: str) -> list[str]:
+    """Load a criteria JSON file for a phase and validate every criterion.
+    Returns a list of error messages (empty if all valid)."""
+    criteria_file = CRITERIA_DIR / f"phase-{phase}.json"
+    errors: list[str] = []
+
+    if not criteria_file.exists():
+        errors.append(f"Criteria file not found: {criteria_file}")
+        return errors
+
+    try:
+        criteria = json.loads(criteria_file.read_text())
+    except json.JSONDecodeError as e:
+        errors.append(f"Invalid JSON in {criteria_file}: {e}")
+        return errors
+
+    if not isinstance(criteria, list):
+        errors.append(f"Criteria file must contain a JSON array: {criteria_file}")
+        return errors
+
+    for i, criterion in enumerate(criteria):
+        criterion_errors = validate_criterion(criterion)
+        for err in criterion_errors:
+            cid = criterion.get("id", f"index {i}")
+            errors.append(f"[{cid}] {err}")
+
+    return errors
 
 
 def run_criterion(project_dir: Path, criterion: dict) -> dict:
@@ -189,7 +287,11 @@ def save_eval_results(project_dir: Path, eval_result: dict):
         all_results = []
 
     all_results.append(eval_result)
-    results_file.write_text(json.dumps(all_results, indent=2))
+    all_results = all_results[-100:]
+
+    tmp_file = results_file.with_suffix('.tmp')
+    tmp_file.write_text(json.dumps(all_results, indent=2))
+    os.replace(tmp_file, results_file)
 
 
 def cmd_run(args):
@@ -277,9 +379,36 @@ def cmd_results(args):
             print(f"  [{status}] {c['id']}: {c['description']}")
 
 
+def cmd_validate(args):
+    """Validate one or all criteria files and print errors."""
+    if args:
+        phases = [args[0].zfill(2)]
+    else:
+        phases = sorted(PHASE_NAMES.keys())
+
+    total_errors = 0
+    for p in phases:
+        errors = validate_criteria_file(p)
+        phase_name = PHASE_NAMES.get(p, "?")
+        if errors:
+            print(f"Phase {p} ({phase_name}): {len(errors)} error(s)")
+            for err in errors:
+                print(f"  - {err}")
+            total_errors += len(errors)
+        else:
+            print(f"Phase {p} ({phase_name}): OK")
+
+    print()
+    if total_errors:
+        print(f"Total: {total_errors} validation error(s)")
+        sys.exit(1)
+    else:
+        print("All criteria files valid.")
+
+
 def main():
     if len(sys.argv) < 2:
-        print("Usage: eval_runner.py <run|show|results> [phase]")
+        print("Usage: eval_runner.py <run|show|results|validate> [phase]")
         sys.exit(1)
 
     cmd = sys.argv[1]
@@ -291,6 +420,8 @@ def main():
         cmd_show(args)
     elif cmd == "results":
         cmd_results(args)
+    elif cmd == "validate":
+        cmd_validate(args)
     else:
         print(f"Unknown command: {cmd}")
         sys.exit(1)

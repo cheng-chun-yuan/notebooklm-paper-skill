@@ -1,30 +1,30 @@
 [
   {
-    "id": "P4-01",
+    "id": "P04-01",
     "description": "evaluation.md exists and is non-empty",
     "check": "file_nonempty",
     "params": {"filepath": "evaluation.md"}
   },
   {
-    "id": "P4-02",
+    "id": "P04-02",
     "description": "Experiment design section present",
     "check": "file_contains",
     "params": {"filepath": "evaluation.md", "pattern": "Experiment Design"}
   },
   {
-    "id": "P4-03",
+    "id": "P04-03",
     "description": "Results section present",
     "check": "file_contains",
     "params": {"filepath": "evaluation.md", "pattern": "## Results"}
   },
   {
-    "id": "P4-04",
+    "id": "P04-04",
     "description": "Claim-evidence mapping present",
     "check": "file_contains",
     "params": {"filepath": "evaluation.md", "pattern": "Claim-Evidence"}
   },
   {
-    "id": "P4-05",
+    "id": "P04-05",
     "description": "Limitations documented",
     "check": "file_contains",
     "params": {"filepath": "evaluation.md", "pattern": "Limitation"}
