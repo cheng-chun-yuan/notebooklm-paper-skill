@@ -4,37 +4,45 @@
 
 SKILL.md files are the "brain" — Claude reads them as instructions for how to guide the user through each phase. Python scripts are the "hands" — they handle data processing (API calls, file I/O, JSON state management).
 
-Phases that require creative reasoning (Position, Architect, Write, Review, Audit, Refine, Venue) are SKILL.md-only — Claude IS the engine. Phases that need external data (Survey, Gap, Scout, Evaluate) have Python scripts backing them.
+Phases that require creative reasoning (Position, Architect, Write, Critique, Refine, Ship) are SKILL.md-only — Claude IS the engine. Phases that need external data (Discover, Evaluate) have Python scripts backing them.
 
 ## Why global storage with project linking
 
-Papers are reusable across projects. A paper analyzed for project A might be relevant to project B. `~/.paper-skill/` is the research database. Each project gets its own directory under `~/.paper-skill/projects/{name}/` with phase artifacts, cross-cutting JSON files, and drafts.
+Papers are reusable across projects. A paper analyzed for project A might be relevant to project B. `~/.notebooklm-paper-skill/` is the research database. Each project gets its own directory under `~/.notebooklm-paper-skill/projects/{name}/` with phase artifacts, cross-cutting JSON files, and drafts.
 
-Project-local linking: when working in a project directory, `RESEARCH_SYNTHESIS.md` is generated there (committed to git), and `.paper-skill/project.json` links back to the global project (gitignored).
+Project-local linking: when working in a project directory, `RESEARCH_SYNTHESIS.md` is generated there (committed to git), and `.notebooklm-paper-skill/project.json` links back to the global project (gitignored).
 
-## Why 11 phases
+## Why 8 phases
 
-Maps to the real doctoral research lifecycle:
-1. Survey — understand what exists
-2. Gap — find what's missing
-3. Scout — find transferable methods from other domains
-4. Position — define your contribution
-5. Architect — design your method
-6. Evaluate — prove it works
-7. Write — put it on paper
-8. Review — simulate peer review
-9. Audit — advisor's honest check
-10. Refine — fix everything
-11. Venue — pick where to submit
+Maps to how PhD students actually think about research:
 
-Fewer phases = skipping critical steps (researchers who skip gap analysis write incremental papers). More = unnecessary granularity.
+1. **Discover** — understand what exists, find what's missing, scout methods (Survey + Gap + Scout merged — all are "understanding the landscape")
+2. **Position** — define your contribution
+3. **Architect** — design your method
+4. **Evaluate** — prove it works
+5. **Write** — put it on paper
+6. **Critique** — stress-test the draft (Review + Audit merged — both assess draft quality from different angles)
+7. **Refine** — fix everything
+8. **Ship** — pick where to submit
+
+Previously 11 phases. Merged Survey+Gap+Scout→Discover and Review+Audit→Critique because these always ran sequentially and represent the same cognitive task from the researcher's perspective.
 
 ## Why cross-cutting systems
 
 - **Acceptance Scorecard**: Built from surveyed papers. Prevents "write the paper then discover it won't be accepted." Every phase checks against it.
 - **Claim-Evidence Chain**: Top rejection reason is unsupported claims. Tracking claims from Position through Write prevents this.
-- **Comparison Matrix**: The most tedious table in any paper. Auto-built from survey/gap/scout phases.
+- **Comparison Matrix**: The most tedious table in any paper. Auto-built from discover/position phases.
+
+## Why self-optimization
+
+Each phase has:
+- **Quality Rubric** — dimensions of excellence (specificity, traceability, completeness + phase-specific)
+- **Anti-patterns** — common failure modes with DON'T/DO INSTEAD examples
+- **Structural Exemplar** — domain-agnostic output skeleton
+- **Failure Recovery** — what to do when output is weak
+
+Binary eval criteria (`/paper eval`) measure phase output quality. `/paper optimize` runs autoresearch-style mutation loops to improve phase prompts automatically.
 
 ## Why feedback loop
 
-Skills improve through usage. Tracking which phases get low ratings or cause backtracks reveals where the guidance is weakest. This feeds into version updates via git.
+Skills improve through usage. Tracking which phases get low ratings or cause backtracks reveals where the guidance is weakest. This feeds into version updates via git and into the self-optimization loop.

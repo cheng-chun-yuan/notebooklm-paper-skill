@@ -1,0 +1,38 @@
+[
+  {
+    "id": "P4-01",
+    "description": "position.md exists and is non-empty",
+    "check": "file_nonempty",
+    "params": {"filepath": "position.md"}
+  },
+  {
+    "id": "P4-02",
+    "description": "Contribution statement is present",
+    "check": "file_contains",
+    "params": {"filepath": "position.md", "pattern": "## Contribution Statement"}
+  },
+  {
+    "id": "P4-03",
+    "description": "At least 2 novelty claims defined",
+    "check": "file_section_count",
+    "params": {"filepath": "position.md", "heading_prefix": "C", "min_count": 2}
+  },
+  {
+    "id": "P4-04",
+    "description": "Differentiation table present (comparison with closest work)",
+    "check": "file_contains",
+    "params": {"filepath": "position.md", "pattern": "## Differentiation"}
+  },
+  {
+    "id": "P4-05",
+    "description": "Research questions are formulated",
+    "check": "file_contains",
+    "params": {"filepath": "position.md", "pattern": "## Research Questions"}
+  },
+  {
+    "id": "P4-06",
+    "description": "Claims added to claims.json",
+    "check": "json_field",
+    "params": {"filepath": "claims.json", "field": "claims", "min_items": 2}
+  }
+]

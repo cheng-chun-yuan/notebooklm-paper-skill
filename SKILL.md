@@ -1,14 +1,14 @@
 ---
-name: paper-skill
-description: Full research paper generation pipeline. 11 phases from literature survey to venue submission. Acceptance scorecard, claim-evidence tracking, comparison matrix. Use when user wants to research a topic, analyze papers, write a paper, or any academic research workflow.
+name: notebooklm-paper-skill
+description: "Research paper pipeline in 8 phases: Discover → Position → Architect → Evaluate → Write → Critique → Refine → Ship. Acceptance scorecard, claim-evidence tracking, comparison matrix."
 ---
 
-# Paper Skill — Research Paper Generation Pipeline
+# Paper Skill — Research Paper Pipeline
 
 ## Preamble (run first)
 
 ```bash
-PAPER_SKILL=~/project/lab/trust_ai_identity/paper-skill
+PAPER_SKILL=~/.claude/skills/notebooklm-paper-skill
 VENV=$PAPER_SKILL/.venv
 PY="$VENV/bin/python3"
 if [ ! -d "$VENV" ] || [ ! -x "$PY" ]; then
@@ -22,22 +22,22 @@ _UPD=$("$PAPER_SKILL/bin/paper-update-check" 2>/dev/null || true)
 echo "VERSION: $_VERSION"
 [ -n "$_UPD" ] && echo "$_UPD"
 
-mkdir -p ~/.paper-skill/sessions ~/.paper-skill/projects
-touch ~/.paper-skill/sessions/"$PPID"
-find ~/.paper-skill/sessions -mmin +120 -type f -delete 2>/dev/null || true
+mkdir -p ~/.notebooklm-paper-skill/sessions ~/.notebooklm-paper-skill/projects
+touch ~/.notebooklm-paper-skill/sessions/"$PPID"
+find ~/.notebooklm-paper-skill/sessions -mmin +120 -type f -delete 2>/dev/null || true
 _AUTH=$("$PY" "$PAPER_SKILL/scripts/run.py" auth status --quiet 2>/dev/null || echo "NO_AUTH")
 echo "AUTH: $_AUTH"
 
 _PROJECT=$("$PY" -c "
 import pathlib, json
-projects_dir = pathlib.Path.home() / '.paper-skill' / 'projects'
+projects_dir = pathlib.Path.home() / '.notebooklm-paper-skill' / 'projects'
 if not projects_dir.exists():
     print('none'); exit()
 for pf in projects_dir.glob('*/project.json'):
     try:
         p = json.loads(pf.read_text())
         if p.get('active'):
-            print(f\"{p['name']} — Phase {p['current_phase']}/11 ({p['phase_name']})\"); exit()
+            print(f\"{p['name']} — Phase {p['current_phase']}/8 ({p['phase_name']})\"); exit()
     except: pass
 print('none')
 " 2>/dev/null || echo "none")
@@ -56,38 +56,32 @@ If `UPGRADE_AVAILABLE`: tell user about the available update and offer `/paper u
 When user invokes `/paper` with no sub-command, show:
 
 ```
-Paper Skill — Research Paper Generation Pipeline
+Paper Skill — Research Paper Pipeline
 
 Where are you in your research?
 
 A) Starting fresh — "I have a topic but haven't read any papers yet"
-   → /paper survey
+   → /paper discover
 
-B) I've read papers — "I know the field but need to find my angle"
-   → /paper gap
-
-C) I found gaps — "I know what's unsolved, need inspiration"
-   → /paper scout
-
-D) I have my angle — "I know my contribution, need to position it"
+B) I know the field — "I've read papers, need to find my angle"
    → /paper position
 
-E) I've positioned — "Contribution is clear, need to design it"
+C) I have my angle — "Contribution is clear, need to design it"
    → /paper architect
 
-F) I have results — "Method is done, need to write it up"
+D) I have results — "Method works, need to write it up"
    → /paper write
 
-G) Draft exists — "Paper is written, needs review"
-   → /paper review
+E) Draft exists — "Paper is written, needs feedback"
+   → /paper critique
 
-H) Continue previous project
-   → list projects from ~/.paper-skill/projects/
+F) Continue previous project
+   → list projects from ~/.notebooklm-paper-skill/projects/
 ```
 
 When user picks an option:
 1. If no active project, create one: ask for project name, then run `$PY -c "from scripts.config import create_project; create_project('{name}', working_directory='$(pwd)')"`
-2. Each entry point runs a health check on prior phases. If jumping ahead (e.g., `/paper write` without gap analysis), flag it but don't block.
+2. Each entry point runs a health check on prior phases. If jumping ahead (e.g., `/paper write` without discover), flag it but don't block.
 3. Read the corresponding sub-skill SKILL.md and follow its instructions.
 
 ## Progress Tracker
@@ -95,19 +89,16 @@ When user picks an option:
 Show at the start of each phase:
 
 ```
-[■■■□□□□□□□□] Phase 3/11 — Scout
+[■■□□□□□□] Phase 2/8 — Position
 
-  ✓ Survey    — {summary from project artifacts}
-  ✓ Gap       — {summary}
-  ► Scout     — {current action}
-  ○ Position  — Define your contribution
+  ✓ Discover  — {summary from project artifacts}
+  ► Position  — {current action}
   ○ Architect — Design your method
   ○ Evaluate  — Experiments & results
   ○ Write     — Generate paper draft
-  ○ Review    — Simulated peer review
-  ○ Audit     — Pre-submission advisory
+  ○ Critique  — Peer review + audit
   ○ Refine    — Fix & polish
-  ○ Venue     — Target venue selection
+  ○ Ship      — Target venue & submit
 
   Scorecard: X/Y met | Claims: S/T supported | Matrix: N papers
 ```
@@ -123,23 +114,22 @@ $PY $PAPER_SKILL/scripts/run.py matrix show 2>/dev/null
 
 | Command | Reads from | Type |
 |---------|------------|------|
-| `/paper survey` | `phases/01-survey.md` | Script-backed |
-| `/paper gap` | `phases/02-gap.md` | Script-backed |
-| `/paper scout` | `phases/03-scout.md` | Script-backed (reuses search) |
-| `/paper position` | `phases/04-position.md` | SKILL.md-only |
-| `/paper architect` | `phases/05-architect.md` | SKILL.md-only |
-| `/paper evaluate` | `phases/06-evaluate.md` | Script-backed |
-| `/paper write` | `phases/07-write.md` | SKILL.md-only |
-| `/paper review` | `phases/08-review.md` | SKILL.md-only |
-| `/paper audit` | `phases/09-audit.md` | SKILL.md-only |
-| `/paper refine` | `phases/10-refine.md` | SKILL.md-only |
-| `/paper venue` | `phases/11-venue.md` | SKILL.md-only |
+| `/paper discover` | `phases/01-discover.md` | Script-backed |
+| `/paper position` | `phases/02-position.md` | SKILL.md-only |
+| `/paper architect` | `phases/03-architect.md` | SKILL.md-only |
+| `/paper evaluate` | `phases/04-evaluate.md` | Script-backed |
+| `/paper write` | `phases/05-write.md` | SKILL.md-only |
+| `/paper critique` | `phases/06-critique.md` | SKILL.md-only |
+| `/paper refine` | `phases/07-refine.md` | SKILL.md-only |
+| `/paper ship` | `phases/08-ship.md` | SKILL.md-only |
 | `/paper auth` | `support/auth.md` | Script-backed |
 | `/paper store` | `support/store.md` | Script-backed |
 | `/paper search` | `support/search.md` | Script-backed |
 | `/paper analyze` | `support/analyze.md` | SKILL.md-only + persistence |
 | `/paper feedback` | `support/feedback.md` | Utility |
 | `/paper update` | `support/update.md` | Utility |
+| `/paper eval` | `support/eval.md` | Script-backed |
+| `/paper optimize` | `support/optimize.md` | SKILL.md-only (autoresearch) |
 
 All paths are relative to the paper-skill root directory.
 
@@ -188,14 +178,12 @@ save_project(p)
 
 | Phase | Trigger | Goes to |
 |-------|---------|---------|
-| Gap | Field too crowded | Survey (adjacent field) |
-| Scout | No usable techniques | Survey (widen scope) |
-| Position | Can't differentiate | Gap or Scout |
-| Architect | Design doesn't hold | Scout |
+| Discover | Field too crowded, all gaps low-novelty | Discover (adjacent field) |
+| Position | Can't differentiate | Discover (find different gap) |
+| Architect | Design doesn't hold | Discover (need better building blocks) |
 | Evaluate | Results don't support claims | Architect or Position |
-| Write | Related work thin / weak motivation | Survey or Position |
-| Review | Fundamental flaw | Any earlier phase |
-| Audit | Not ready | Specific phase flagged |
+| Write | Related work thin / weak motivation | Discover or Position |
+| Critique | Fundamental flaw | Any earlier phase |
 | Refine | Needs more evidence | Evaluate |
 
 When backtracking: do NOT reset completed phases. Keep all artifacts. User can re-run a phase with broader scope.
@@ -223,13 +211,13 @@ Every phase exits with one of:
 ## Cross-Cutting Commands Reference
 
 ```bash
-PY=~/project/lab/trust_ai_identity/paper-skill/.venv/bin/python3
-SKILL=~/project/lab/trust_ai_identity/paper-skill
+PY=~/.claude/skills/notebooklm-paper-skill/.venv/bin/python3
+SKILL=~/.claude/skills/notebooklm-paper-skill
 
 # Scorecard
 $PY $SKILL/scripts/run.py scorecard show
 $PY $SKILL/scripts/run.py scorecard add "requirement name" 0.91
-$PY $SKILL/scripts/run.py scorecard update "requirement name" met survey
+$PY $SKILL/scripts/run.py scorecard update "requirement name" met discover
 
 # Claims
 $PY $SKILL/scripts/run.py claims show
@@ -241,4 +229,9 @@ $PY $SKILL/scripts/run.py matrix show
 $PY $SKILL/scripts/run.py matrix add-dim "dimension name"
 $PY $SKILL/scripts/run.py matrix add-paper "paper name"
 $PY $SKILL/scripts/run.py matrix set "paper" "dimension" true
+
+# Eval
+$PY $SKILL/scripts/run.py eval run [phase_number]
+$PY $SKILL/scripts/run.py eval show [phase_number]
+$PY $SKILL/scripts/run.py eval results [phase_number]
 ```

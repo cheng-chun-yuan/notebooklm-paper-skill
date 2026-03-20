@@ -10,8 +10,8 @@ Manages NotebookLM authentication via notebooklm-py.
 ## Commands
 
 ```bash
-PY=~/project/lab/trust_ai_identity/paper-skill/.venv/bin/python3
-SKILL=~/project/lab/trust_ai_identity/paper-skill
+PY=~/.claude/skills/notebooklm-paper-skill/.venv/bin/python3
+SKILL=~/.claude/skills/notebooklm-paper-skill
 
 $PY $SKILL/scripts/run.py auth status   # Check auth state
 $PY $SKILL/scripts/run.py auth setup    # Interactive login (opens browser)

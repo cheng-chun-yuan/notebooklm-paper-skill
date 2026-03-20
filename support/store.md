@@ -10,8 +10,8 @@ Handles NotebookLM notebook management — uploading PDFs, listing/searching not
 ## Commands
 
 ```bash
-PY=~/project/lab/trust_ai_identity/paper-skill/.venv/bin/python3
-SKILL=~/project/lab/trust_ai_identity/paper-skill
+PY=~/.claude/skills/notebooklm-paper-skill/.venv/bin/python3
+SKILL=~/.claude/skills/notebooklm-paper-skill
 
 # Upload PDFs to a notebook
 $PY $SKILL/scripts/run.py store upload --notebook-url "..." --pdf-dir PATH

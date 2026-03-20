@@ -1,0 +1,32 @@
+[
+  {
+    "id": "P1-01",
+    "description": "field-map.md exists and is non-empty",
+    "check": "file_nonempty",
+    "params": {"filepath": "field-map.md"}
+  },
+  {
+    "id": "P1-02",
+    "description": "Scorecard has at least 5 requirements",
+    "check": "json_field",
+    "params": {"filepath": "scorecard.json", "field": "requirements", "min_items": 5}
+  },
+  {
+    "id": "P1-03",
+    "description": "gaps.md exists and is non-empty",
+    "check": "file_nonempty",
+    "params": {"filepath": "gaps.md"}
+  },
+  {
+    "id": "P1-04",
+    "description": "At least 3 gaps identified",
+    "check": "file_section_count",
+    "params": {"filepath": "gaps.md", "heading_prefix": "### Gap", "min_count": 3}
+  },
+  {
+    "id": "P1-05",
+    "description": "Field map has success patterns section",
+    "check": "file_contains",
+    "params": {"filepath": "field-map.md", "pattern": "Success Pattern"}
+  }
+]

@@ -3,24 +3,99 @@ name: paper-architect
 description: Design the system or method architecture, mapping components to gaps and identifying what is novel vs adapted.
 ---
 
-# /paper architect — Phase 5: Design Your Method
+# /paper architect — Phase 3: Design Your Method
 
 Transforms the contribution statement and inspiration into a concrete system or method architecture.
 
 ## Variables
 
 ```bash
-PY=~/project/lab/trust_ai_identity/paper-skill/.venv/bin/python3
-SKILL=~/project/lab/trust_ai_identity/paper-skill
+PY=~/.claude/skills/notebooklm-paper-skill/.venv/bin/python3
+SKILL=~/.claude/skills/notebooklm-paper-skill
 ```
 
 ## Input
 
-Read from the active project directory (`~/.paper-skill/projects/{name}/`):
+Read from the active project directory (`~/.notebooklm-paper-skill/projects/{name}/`):
 - `position.md` — contribution statement, novelty claims, research questions
-- `inspiration-map.md` — transferable methods and building blocks from the scout phase
+- `inspiration-map.md` — transferable methods and building blocks from the discover phase
 
 If `position.md` is missing, warn the user and recommend `/paper position`.
+
+## Variable Shortcuts
+
+| Shortcut | Expansion |
+|----------|-----------|
+| `$PY` | `~/.claude/skills/notebooklm-paper-skill/.venv/bin/python3` |
+| `$SKILL` | `~/.claude/skills/notebooklm-paper-skill` |
+
+## Quality Rubric
+
+### Universal Dimensions
+
+- **Specificity** — Each component has concrete inputs, outputs, algorithm description, and connection points. Not "processes the data" but "takes N×D feature matrix, applies self-attention with 8 heads, outputs N×D contextualized embeddings."
+- **Traceability** — Every component traces to a gap from position.md. Every adapted technique traces to a source in inspiration-map.md. Component-to-gap mapping is complete.
+- **Completeness** — 3-7 components defined, system diagram present, novel vs. adapted clearly separated, assumptions/limitations documented, scorecard updated.
+
+### Phase-Specific Dimensions
+
+- **Ablation readiness** — Each component can be independently evaluated. The architecture supports ablation studies: removing or replacing any single component should be feasible and meaningful.
+- **Baseline feasibility** — The architecture implies realistic baselines. Each design choice has an obvious "what if we didn't do this?" alternative that can serve as an ablation baseline.
+
+## Anti-patterns
+
+1. **Hand-wavy components** — DON'T: "The feature extractor processes inputs into useful representations." DO INSTEAD: "The feature extractor is a 6-layer Transformer encoder that takes tokenized input (max 512 tokens) and outputs 768-dimensional hidden states for each position."
+
+2. **Monolithic design** — DON'T: Design a single end-to-end system with no clear component boundaries. DO INSTEAD: Break into 3-7 components with defined interfaces. Each component should be independently testable and replaceable.
+
+3. **All novel, nothing grounded** — DON'T: Claim every component is novel. Reviewers are suspicious when nothing is adapted from existing work. DO INSTEAD: Clearly label what is novel, what is adapted (and how), and what is off-the-shelf. A good paper typically has 1-2 novel components and several adapted/standard ones.
+
+4. **Missing failure modes** — DON'T: Skip the "when does this break?" analysis. DO INSTEAD: For each component, state the conditions under which it degrades or fails. This shows intellectual honesty and helps scope the evaluation.
+
+## Structural Exemplar
+
+```markdown
+# Architecture — {Project Name}
+
+## System Overview
+
+**Method name**: {Name}
+**Type**: {framework / algorithm / system}
+**Core idea**: {One sentence: how it works at the highest level}
+
+### Architecture Diagram
+```
+Input → [Component A: {purpose}] → [Component B: {purpose}] → Output
+              |                            ^
+              v                            |
+         [Component C: {purpose}] --------+
+```
+
+## Components
+
+### {Component 1 Name}
+**Purpose**: {what it does in the system}
+**Technique**: {specific algorithm/approach}
+**Novel or adapted**: {Novel / Adapted from [Paper X], modified by [what]}
+**Addresses gap**: {G1: gap description}
+**Inputs**: {data format, shape, source}
+**Outputs**: {data format, shape, destination}
+
+## Novel vs Adapted
+
+### Novel
+- {Component}: {why this is new — what didn't exist before}
+
+### Adapted
+- {Component}: from {source}, changed {what and why}
+
+### Standard
+- {Component}: uses {standard technique} without modification
+
+## Assumptions and Limitations
+- Assumes {X} — fails when {Y}
+- Limited to {scope} — does not handle {out-of-scope}
+```
 
 ## Workflow
 
@@ -29,11 +104,11 @@ If `position.md` is missing, warn the user and recommend `/paper position`.
 Read `position.md` and `inspiration-map.md`. Summarize back to the user:
 
 ```
-PROJECT: {name} — Phase 5/11 (Architect)
+PROJECT: {name} — Phase 3/8 (Architect)
 
 Contribution: {contribution statement}
 Claims: {list claims}
-Key building blocks from scout: {list techniques from inspiration-map}
+Key building blocks from discover: {list techniques from inspiration-map}
 
 Ready to design the architecture. Any constraints or preferences before we start?
 ```
@@ -141,7 +216,7 @@ $PY $SKILL/scripts/run.py scorecard update "Component justification" met archite
 
 ## Output
 
-Write `~/.paper-skill/projects/{name}/architecture.md` with this structure:
+Write `~/.notebooklm-paper-skill/projects/{name}/architecture.md` with this structure:
 
 ```markdown
 # Architecture — {Project Name}
@@ -224,6 +299,14 @@ Before completing this phase, verify:
 
 If the health check reveals unmapped gaps, iterate on the architecture before proceeding.
 
+## Failure Recovery
+
+1. **Architecture can't address a key gap** — If a gap from position.md has no component mapped to it: Either design a new component specifically for that gap, or revisit position.md to remove claims about that gap. Don't leave unmapped gaps — they become unsupported claims.
+
+2. **Too many components (>7)** — The architecture is overengineered. Merge components that always operate together. Ask: "Can these two components be described as one with a clear interface?" If yes, merge.
+
+3. **No clear novel contribution in the architecture** — If everything is adapted or standard, the novelty must be in the combination or the application domain. Explicitly state: "The novelty is not in individual components but in their combination to address {gap}." If even the combination isn't novel, backtrack to `/paper position`.
+
 ## Phase Transition
 
 Use the standard phase transition template from the root SKILL.md.
@@ -233,12 +316,12 @@ RECOMMENDATION: /paper evaluate because the architecture is designed and needs e
 
 A) Continue to /paper evaluate (recommended)
 B) Go deeper — refine component details or add formal specifications
-C) Backtrack to /paper scout — "Design doesn't hold, need better building blocks"
+C) Backtrack to /paper discover — "Design doesn't hold, need better building blocks"
 D) Backtrack to /paper position — "Architecture reveals the contribution needs rethinking"
 E) Save progress and stop here
 ```
 
 Backtrack triggers:
-- Architecture cannot address a key gap -> `/paper scout` (find better building blocks)
+- Architecture cannot address a key gap -> `/paper discover` (find better building blocks)
 - Design reveals the contribution is not feasible -> `/paper position` (redefine contribution)
-- Too many components are adapted with no novelty -> `/paper scout` or `/paper position`
+- Too many components are adapted with no novelty -> `/paper discover` or `/paper position`

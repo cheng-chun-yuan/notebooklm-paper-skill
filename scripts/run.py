@@ -22,6 +22,7 @@ SCRIPT_ALIASES = {
     "gap": "gap/gap_analyzer.py",
     "synthesize": "synthesize/synthesizer.py",
     "cleanup": "utils/cleanup_manager.py",
+    "eval": "eval/eval_runner.py",
 }
 
 

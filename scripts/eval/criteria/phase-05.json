@@ -1,0 +1,56 @@
+[
+  {
+    "id": "P5-01",
+    "description": "v1-draft.md exists and is non-empty",
+    "check": "file_nonempty",
+    "params": {"filepath": "drafts/v1-draft.md"}
+  },
+  {
+    "id": "P5-02",
+    "description": "Abstract section present",
+    "check": "file_contains",
+    "params": {"filepath": "drafts/v1-draft.md", "pattern": "Abstract"}
+  },
+  {
+    "id": "P5-03",
+    "description": "Introduction section present",
+    "check": "file_contains",
+    "params": {"filepath": "drafts/v1-draft.md", "pattern": "Introduction"}
+  },
+  {
+    "id": "P5-04",
+    "description": "Related Work section present",
+    "check": "file_contains",
+    "params": {"filepath": "drafts/v1-draft.md", "pattern": "Related Work"}
+  },
+  {
+    "id": "P5-05",
+    "description": "Method section present",
+    "check": "file_contains",
+    "params": {"filepath": "drafts/v1-draft.md", "pattern": "Method"}
+  },
+  {
+    "id": "P5-06",
+    "description": "Evaluation section present",
+    "check": "file_contains",
+    "params": {"filepath": "drafts/v1-draft.md", "pattern": "Evaluation"}
+  },
+  {
+    "id": "P5-07",
+    "description": "Conclusion section present",
+    "check": "file_contains",
+    "params": {"filepath": "drafts/v1-draft.md", "pattern": "Conclusion"}
+  },
+  {
+    "id": "P5-08",
+    "description": "Draft is at least 2000 words",
+    "check": "word_count",
+    "params": {"filepath": "drafts/v1-draft.md", "min_words": 2000}
+  },
+  {
+    "id": "P5-09",
+    "description": "Limitations acknowledged",
+    "check": "file_contains",
+    "params": {"filepath": "drafts/v1-draft.md", "pattern": "limitation"}
+  }
+]

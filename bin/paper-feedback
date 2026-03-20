@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Save user feedback for a phase to ~/.paper-skill/feedback/
+# Save user feedback for a phase to ~/.notebooklm-paper-skill/feedback/
 set -euo pipefail
 
-FEEDBACK_DIR="$HOME/.paper-skill/feedback"
+FEEDBACK_DIR="$HOME/.notebooklm-paper-skill/feedback"
 mkdir -p "$FEEDBACK_DIR"
 
 PHASE="${1:?Usage: paper-feedback <phase> <rating> [comment]}"

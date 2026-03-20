@@ -1,0 +1,38 @@
+{
+  "items": [
+    {
+      "type": "folder",
+      "ctime": 1710892800000,
+      "title": "Projects",
+      "items": [
+        {
+          "type": "folder",
+          "ctime": 1710892800000,
+          "path": "projects"
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "ctime": 1710892800000,
+      "title": "Library",
+      "items": [
+        {
+          "type": "folder",
+          "ctime": 1710892800000,
+          "path": "papers"
+        },
+        {
+          "type": "folder",
+          "ctime": 1710892800000,
+          "path": "analyses"
+        },
+        {
+          "type": "folder",
+          "ctime": 1710892800000,
+          "path": "gaps"
+        }
+      ]
+    }
+  ]
+}

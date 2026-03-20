@@ -10,7 +10,7 @@ Checks for available updates and applies them.
 ## Commands
 
 ```bash
-SKILL=~/project/lab/trust_ai_identity/paper-skill
+SKILL=~/.claude/skills/notebooklm-paper-skill
 PY=$SKILL/.venv/bin/python3
 
 # Check for updates (compares local VERSION to remote)

@@ -10,8 +10,8 @@ Performs structured analysis of a research paper using the STAR framework.
 ## Save Command
 
 ```bash
-PY=~/project/lab/trust_ai_identity/paper-skill/.venv/bin/python3
-SKILL=~/project/lab/trust_ai_identity/paper-skill
+PY=~/.claude/skills/notebooklm-paper-skill/.venv/bin/python3
+SKILL=~/.claude/skills/notebooklm-paper-skill
 
 $PY $SKILL/scripts/run.py analyze save <paper_id> <file>
 ```

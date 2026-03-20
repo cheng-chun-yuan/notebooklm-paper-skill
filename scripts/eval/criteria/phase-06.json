@@ -1,0 +1,56 @@
+[
+  {
+    "id": "P6-01",
+    "description": "critique-report.md exists and is non-empty",
+    "check": "file_nonempty",
+    "params": {"filepath": "critique-report.md"}
+  },
+  {
+    "id": "P6-02",
+    "description": "Reviewer A (Domain Expert) section present",
+    "check": "file_contains",
+    "params": {"filepath": "critique-report.md", "pattern": "Reviewer A"}
+  },
+  {
+    "id": "P6-03",
+    "description": "Reviewer B (Methodology Hawk) section present",
+    "check": "file_contains",
+    "params": {"filepath": "critique-report.md", "pattern": "Reviewer B"}
+  },
+  {
+    "id": "P6-04",
+    "description": "Reviewer C (Clarity Critic) section present",
+    "check": "file_contains",
+    "params": {"filepath": "critique-report.md", "pattern": "Reviewer C"}
+  },
+  {
+    "id": "P6-05",
+    "description": "Meta-review present",
+    "check": "file_contains",
+    "params": {"filepath": "critique-report.md", "pattern": "Meta-Review"}
+  },
+  {
+    "id": "P6-06",
+    "description": "Priority-ranked issues list present",
+    "check": "file_contains",
+    "params": {"filepath": "critique-report.md", "pattern": "Priority-Ranked"}
+  },
+  {
+    "id": "P6-07",
+    "description": "Structural audit section present",
+    "check": "file_contains",
+    "params": {"filepath": "critique-report.md", "pattern": "Structural Audit"}
+  },
+  {
+    "id": "P6-08",
+    "description": "Overall readiness score present",
+    "check": "file_contains",
+    "params": {"filepath": "critique-report.md", "pattern": "OVERALL READINESS"}
+  },
+  {
+    "id": "P6-09",
+    "description": "Acceptance probability estimated",
+    "check": "file_contains",
+    "params": {"filepath": "critique-report.md", "pattern": "ACCEPTANCE PROBABILITY"}
+  }
+]

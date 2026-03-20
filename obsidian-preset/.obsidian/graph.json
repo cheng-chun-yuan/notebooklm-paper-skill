@@ -1,0 +1,48 @@
+{
+  "collapse-filter": false,
+  "search": "",
+  "showTags": true,
+  "showAttachments": true,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color": false,
+  "colorGroups": [
+    {
+      "query": "path:projects",
+      "color": {
+        "a": 1,
+        "rgb": 5145596
+      }
+    },
+    {
+      "query": "path:papers",
+      "color": {
+        "a": 1,
+        "rgb": 2263842
+      }
+    },
+    {
+      "query": "path:analyses",
+      "color": {
+        "a": 1,
+        "rgb": 16744448
+      }
+    },
+    {
+      "query": "path:gaps",
+      "color": {
+        "a": 1,
+        "rgb": 16729156
+      }
+    }
+  ],
+  "collapse-display": false,
+  "lineSizeMultiplier": 1,
+  "nodeSizeMultiplier": 1,
+  "textFadeMultiplier": 0,
+  "collapse-forces": false,
+  "centerStrength": 0.5,
+  "repelStrength": 10,
+  "linkStrength": 1,
+  "linkDistance": 250
+}

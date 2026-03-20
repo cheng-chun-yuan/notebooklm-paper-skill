@@ -3,24 +3,81 @@ name: paper-position
 description: Define your research contribution, novelty claims, and differentiation from closest related work.
 ---
 
-# /paper position — Phase 4: Define Your Contribution
+# /paper position — Phase 2: Define Your Contribution
 
 Transforms gap analysis and scouted inspiration into a clear contribution statement with novelty claims.
 
 ## Variables
 
 ```bash
-PY=~/project/lab/trust_ai_identity/paper-skill/.venv/bin/python3
-SKILL=~/project/lab/trust_ai_identity/paper-skill
+PY=~/.claude/skills/notebooklm-paper-skill/.venv/bin/python3
+SKILL=~/.claude/skills/notebooklm-paper-skill
 ```
 
 ## Input
 
-Read from the active project directory (`~/.paper-skill/projects/{name}/`):
-- `gaps.md` — prioritized research gaps from the gap phase
-- `inspiration-map.md` — transferable methods and ideas from the scout phase
+Read from the active project directory (`~/.notebooklm-paper-skill/projects/{name}/`):
+- `gaps.md` — prioritized research gaps from the discover phase
+- `inspiration-map.md` — transferable methods and ideas from the discover phase
 
-If either file is missing, warn the user and recommend the corresponding phase (`/paper gap` or `/paper scout`).
+If either file is missing, warn the user and recommend the corresponding phase (`/paper discover`).
+
+## Quality Rubric
+
+### Universal dimensions
+
+- **Specificity** — Contribution statement names the exact technique, the exact gap, and the exact benefit. Not "We improve X" but "We combine [technique A] with [technique B] to address [gap G], reducing [metric] by [amount] on [benchmark]."
+- **Traceability** — Every claim traces to a specific gap from gaps.md. Every differentiation point traces to a specific paper from field-map.md or inspiration-map.md.
+- **Completeness** — 2-5 numbered claims added to claims.json. Comparison matrix initialized with 3+ papers. Research questions formulated for architect/evaluate phases.
+
+### Phase-specific dimensions
+
+- **Falsifiability** — Every claim is testable. "Our method is better" is not falsifiable. "Our method achieves >=15% improvement on [specific metric] over [specific baseline] on [specific dataset]" is falsifiable.
+- **Differentiation clarity** — For each of the top-3 closest papers, the differentiation is stated in one sentence that a non-expert could understand. Not "We use a different architecture" but "Unlike [Paper X] which requires labeled data, our approach learns from unlabeled examples."
+
+## Anti-patterns
+
+1. **Category-level positioning** — DON'T: "We address the problem of NLP for healthcare." DO INSTEAD: "We address medication extraction from unstructured clinical notes where existing NER models miss multi-word drug names."
+
+2. **Incremental-disguised-as-novel** — DON'T: Claim novelty for combining two existing techniques in an obvious way. EXAMPLE: "We propose using BERT with attention for classification." DO INSTEAD: Articulate what the combination enables that neither technique alone could achieve. If you can't, the contribution may be incremental.
+
+3. **Unfalsifiable claims** — DON'T: "Our framework provides a comprehensive solution." DO INSTEAD: "Our framework handles [specific cases A, B, C] that [baseline] cannot, as demonstrated in Section 4.2, Table 3."
+
+4. **Missing closest competitor** — DON'T: Differentiate against strawman baselines from 5+ years ago. DO INSTEAD: Identify the strongest recent work (last 2 years) and articulate the specific delta. If you can't beat the closest competitor, reframe the contribution.
+
+## Structural Exemplar
+
+```markdown
+# Position — {Project Name}
+
+## Contribution Statement
+
+We propose **{Method Name}**, which combines {technique A from inspiration} with
+{technique B} to solve {specific gap from gaps.md}. This enables {concrete benefit
+that wasn't possible before}, achieving {metric improvement} on {benchmark}.
+
+## Novelty Claims
+
+1. C1: {Method Name} achieves {specific metric} on {benchmark}, outperforming
+   {strongest baseline} by {amount} [Testable in Phase 4]
+2. C2: Combining {A} with {B} enables {new capability} that neither achieves alone
+   [Testable via ablation in Phase 4]
+3. C3: {Specific measurable property} under conditions {X, Y, Z}
+   [Testable in Phase 4]
+
+## Differentiation from Closest Work
+
+| Aspect | {Paper 1} | {Paper 2} | {Paper 3} | Ours |
+|--------|-----------|-----------|-----------|------|
+| {Key dimension from gap} | No | Partial | No | Yes |
+| {Another dimension} | {detail} | {detail} | {detail} | {detail} |
+
+## Research Questions
+
+- RQ1: Does {method} achieve {claimed benefit} vs {baselines}?
+- RQ2: How does {component} contribute to overall performance? [ablation]
+- RQ3: Under what conditions does {method} fail or degrade?
+```
 
 ## Workflow
 
@@ -31,7 +88,7 @@ Read `gaps.md` and present the high-priority gaps to the user.
 If there are multiple high-priority gaps, ask:
 
 ```
-PROJECT: {name} — Phase 4/11 (Position)
+PROJECT: {name} — Phase 2/8 (Position)
 
 Your gap analysis found these high-priority gaps:
 
@@ -138,7 +195,7 @@ Check: is the novelty strong enough based on field expectations? If the scorecar
 
 ## Output
 
-Write `~/.paper-skill/projects/{name}/position.md` with this structure:
+Write `~/.notebooklm-paper-skill/projects/{name}/position.md` with this structure:
 
 ```markdown
 # Position — {Project Name}
@@ -202,6 +259,14 @@ Before completing this phase, verify:
 
 If any check fails, address it before proceeding.
 
+## Failure Recovery
+
+1. **Can't differentiate from top-3 papers** — If the closest papers already do something very similar: (a) Look for a different gap in gaps.md that's more unique, (b) Check inspiration-map.md for a cross-domain technique that creates a novel combination, (c) If no differentiation exists, backtrack to `/paper discover`.
+
+2. **Claims feel incremental** — If claims are small improvements on existing work: Ask "What becomes POSSIBLE with this that was IMPOSSIBLE before?" If the answer is "nothing, it's just faster/better," the positioning needs work. Consider reframing: instead of "X% improvement," frame as "enables [new use case] for the first time."
+
+3. **Too many claims (>5)** — Focus. Pick the 2-3 strongest claims that form a coherent story. Extra claims dilute the message and create more obligations for the evaluation phase.
+
 ## Phase Transition
 
 Use the standard phase transition template from the root SKILL.md.
@@ -211,12 +276,12 @@ RECOMMENDATION: /paper architect because your contribution is defined and needs 
 
 A) Continue to /paper architect (recommended)
 B) Go deeper — add more claims or refine differentiation
-C) Backtrack to /paper gap — "Can't differentiate from existing work"
-D) Backtrack to /paper scout — "Need better building blocks for the contribution"
+C) Backtrack to /paper discover — "Can't differentiate from existing work"
+D) Backtrack to /paper discover — "Need better building blocks for the contribution"
 E) Save progress and stop here
 ```
 
 Backtrack triggers:
-- Cannot clearly differentiate from top-3 papers -> `/paper gap` (find different gap) or `/paper scout` (find different inspiration)
-- Contribution feels incremental -> `/paper gap` (look for bigger gaps)
-- No testable claims can be formulated -> `/paper scout` (need more concrete methods)
+- Cannot clearly differentiate from top-3 papers -> `/paper discover` (find different gap) or `/paper discover` (find different inspiration)
+- Contribution feels incremental -> `/paper discover` (look for bigger gaps)
+- No testable claims can be formulated -> `/paper discover` (need more concrete methods)

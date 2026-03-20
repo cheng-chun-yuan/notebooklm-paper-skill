@@ -1,0 +1,32 @@
+[
+  {
+    "id": "P11-01",
+    "description": "venue-recommendation.md exists and is non-empty",
+    "check": "file_nonempty",
+    "params": {"filepath": "venue-recommendation.md"}
+  },
+  {
+    "id": "P11-02",
+    "description": "At least one Tier A venue recommended",
+    "check": "file_contains",
+    "params": {"filepath": "venue-recommendation.md", "pattern": "Tier A"}
+  },
+  {
+    "id": "P11-03",
+    "description": "Formatting notes for top venue present",
+    "check": "file_contains",
+    "params": {"filepath": "venue-recommendation.md", "pattern": "Formatting Notes"}
+  },
+  {
+    "id": "P11-04",
+    "description": "Timeline with deadline present",
+    "check": "file_contains",
+    "params": {"filepath": "venue-recommendation.md", "pattern": "Timeline"}
+  },
+  {
+    "id": "P11-05",
+    "description": "Match scores provided",
+    "check": "file_contains",
+    "params": {"filepath": "venue-recommendation.md", "pattern": "Match:"}
+  }
+]

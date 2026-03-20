@@ -3,20 +3,20 @@ name: paper-evaluate
 description: Design experiments, analyze results, validate claims with evidence, and update the comparison matrix and scorecard.
 ---
 
-# /paper evaluate — Phase 6: Experiments and Results
+# /paper evaluate — Phase 4: Experiments and Results
 
 Designs the evaluation plan, then analyzes results to validate each claim from the position phase.
 
 ## Variables
 
 ```bash
-PY=~/project/lab/trust_ai_identity/paper-skill/.venv/bin/python3
-SKILL=~/project/lab/trust_ai_identity/paper-skill
+PY=~/.claude/skills/notebooklm-paper-skill/.venv/bin/python3
+SKILL=~/.claude/skills/notebooklm-paper-skill
 ```
 
 ## Input
 
-Read from the active project directory (`~/.paper-skill/projects/{name}/`):
+Read from the active project directory (`~/.notebooklm-paper-skill/projects/{name}/`):
 - `architecture.md` — system design with components and gap mappings
 - `position.md` — claims and research questions
 
@@ -37,7 +37,7 @@ If `architecture.md` is missing, warn the user and recommend `/paper architect`.
 Summarize to the user:
 
 ```
-PROJECT: {name} — Phase 6/11 (Evaluate)
+PROJECT: {name} — Phase 4/8 (Evaluate)
 
 Claims to validate:
   C1: {claim text}
@@ -199,7 +199,7 @@ These feed directly into the paper's Limitations section.
 
 ## Output
 
-Write `~/.paper-skill/projects/{name}/evaluation.md` with this structure:
+Write `~/.notebooklm-paper-skill/projects/{name}/evaluation.md` with this structure:
 
 ```markdown
 # Evaluation — {Project Name}

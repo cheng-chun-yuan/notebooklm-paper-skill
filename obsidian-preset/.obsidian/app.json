@@ -1,0 +1,15 @@
+{
+  "showLineNumber": true,
+  "strictLineBreaks": false,
+  "readableLineLength": true,
+  "showFrontmatter": true,
+  "foldHeading": true,
+  "foldIndent": true,
+  "defaultViewMode": "preview",
+  "livePreview": true,
+  "attachmentFolderPath": "papers",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "projects",
+  "showUnsupportedFiles": true,
+  "alwaysUpdateLinks": true
+}
