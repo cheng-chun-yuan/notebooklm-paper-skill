@@ -1,5 +1,5 @@
 ---
-name: notebooklm-paper-skill
+name: notebooklm-paper
 description: "Research paper pipeline in 8 phases: Discover → Position → Architect → Evaluate → Write → Critique → Refine → Ship. Acceptance scorecard, claim-evidence tracking, comparison matrix."
 ---
 
