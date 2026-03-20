@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.2.1 (2026-03-21)
+
+### Eval infrastructure hardening
+- Renumbered eval criteria IDs from old 11-phase (P4-*, P10-*, P11-*) to new 8-phase (P01-* through P08-*)
+- Added JSON schema validation for criteria files (`eval validate` command)
+- Added artifact manifest (`scripts/eval/artifacts.json`) for cross-reference validation
+- Added encoding safety (UnicodeDecodeError handling) in file-reading check functions
+- Added atomic writes (temp file + os.replace) in save_eval_results
+- Capped eval results at 100 entries to prevent unbounded growth
+- Deduplicated eval_runner.py — imports shared code from config.py
+
+### Self-optimization safety
+- Added Python backup/restore script (`scripts/optimize/backup_manager.py`) for safe prompt mutations
+- Registered optimize command in run.py routing
+
+### Testing
+- Added 26 unit tests for eval_runner.py covering all check functions, edge cases, and results management
+
+### Fixes
+- Fixed `create_project()` phase_name: "survey" → "discover" to match 8-phase naming
+
 ## 0.2.0 (2026-03-21)
 
 ### Pipeline restructure: 11 → 8 phases
