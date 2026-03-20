@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SKILL_DIR="$(cd "$(dirname "$0")" && pwd)"
+VENV="$SKILL_DIR/.venv"
+DATA_DIR="$HOME/.paper-skill"
+
+echo "=== paper-skill setup ==="
+
+# 1. Create global data directories
+echo "Creating data directories..."
+mkdir -p "$DATA_DIR"/{papers,analyses,gaps,surveys,projects,feedback,sessions}
+
+# 2. Create Python venv
+if [ ! -d "$VENV" ]; then
+  echo "Creating virtual environment..."
+  python3 -m venv "$VENV"
+fi
+
+# 3. Install dependencies
+echo "Installing dependencies..."
+"$VENV/bin/pip" install -q -r "$SKILL_DIR/requirements.txt"
+
+# 4. Migrate existing notebooklm-skill data
+OLD_DATA="$HOME/.claude/skills/notebooklm-skill/data"
+if [ -d "$OLD_DATA" ]; then
+  echo "Migrating notebooklm-skill data..."
+  [ -d "$OLD_DATA/papers" ] && cp -rn "$OLD_DATA/papers/"* "$DATA_DIR/papers/" 2>/dev/null || true
+  [ -f "$OLD_DATA/library.json" ] && cp -n "$OLD_DATA/library.json" "$DATA_DIR/library.json" 2>/dev/null || true
+  [ -f "$OLD_DATA/surveys.json" ] && cp -n "$OLD_DATA/surveys.json" "$DATA_DIR/surveys/surveys.json" 2>/dev/null || true
+  [ -f "$OLD_DATA/downloads.json" ] && cp -n "$OLD_DATA/downloads.json" "$DATA_DIR/downloads.json" 2>/dev/null || true
+  echo "Migration complete. Old data preserved at $OLD_DATA"
+fi
+
+# 5. Initialize default config if not exists
+if [ ! -f "$DATA_DIR/config.json" ]; then
+  echo '{"feedback_mode": "on", "feedback_auto_collect": true}' > "$DATA_DIR/config.json"
+fi
+
+echo ""
+echo "=== Setup complete ==="
+echo "Data directory: $DATA_DIR"
+echo "Run: python3 $SKILL_DIR/scripts/run.py auth setup  (to configure NotebookLM)"

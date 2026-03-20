@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Read/write ~/.paper-skill/config.json
+set -euo pipefail
+
+CONFIG="$HOME/.paper-skill/config.json"
+
+if [ ! -f "$CONFIG" ]; then
+  echo '{}' > "$CONFIG"
+fi
+
+case "${1:-}" in
+  get)
+    key="${2:?Usage: paper-config get <key>}"
+    python3 -c "import json; c=json.load(open('$CONFIG')); print(c.get('$key', ''))"
+    ;;
+  set)
+    key="${2:?Usage: paper-config set <key> <value>}"
+    value="${3:?Usage: paper-config set <key> <value>}"
+    python3 -c "
+import json
+c=json.load(open('$CONFIG'))
+c['$key']='$value'
+json.dump(c, open('$CONFIG','w'), indent=2)
+"
+    ;;
+  *)
+    echo "Usage: paper-config get|set <key> [<value>]"
+    exit 1
+    ;;
+esac

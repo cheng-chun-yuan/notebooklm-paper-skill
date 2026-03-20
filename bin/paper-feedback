@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Save user feedback for a phase to ~/.paper-skill/feedback/
+set -euo pipefail
+
+FEEDBACK_DIR="$HOME/.paper-skill/feedback"
+mkdir -p "$FEEDBACK_DIR"
+
+PHASE="${1:?Usage: paper-feedback <phase> <rating> [comment]}"
+RATING="${2:?Usage: paper-feedback <phase> <rating> [comment]}"
+COMMENT="${3:-}"
+DATE=$(date +%Y-%m-%d)
+VERSION=$(cat "$(cd "$(dirname "$0")/.." && pwd)/VERSION" 2>/dev/null || echo "unknown")
+SLUG="${DATE}-${PHASE}"
+
+cat > "$FEEDBACK_DIR/${SLUG}.md" <<EOF
+---
+phase: $PHASE
+rating: $RATING
+date: $DATE
+version: $VERSION
+---
+
+## Feedback
+$COMMENT
+EOF
+
+echo "Saved feedback to $FEEDBACK_DIR/${SLUG}.md"

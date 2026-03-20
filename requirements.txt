@@ -1,0 +1,13 @@
+# NotebookLM Python API
+notebooklm-py[browser]
+
+# Environment management
+python-dotenv==1.0.0
+
+# Paper search APIs
+arxiv>=2.4.0
+semanticscholar>=0.8.0
+
+# HTTP client for downloads
+httpx>=0.28.0
+requests>=2.31.0
