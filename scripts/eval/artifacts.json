@@ -1,0 +1,54 @@
+{
+  "01": {
+    "phase_name": "discover",
+    "artifacts": [
+      {"file": "field-map.md", "description": "Field landscape map with key papers, trends, success patterns"},
+      {"file": "gaps.md", "description": "Research gaps with novelty/impact ratings"},
+      {"file": "scorecard.json", "description": "Acceptance scorecard with requirements"}
+    ]
+  },
+  "02": {
+    "phase_name": "position",
+    "artifacts": [
+      {"file": "position.md", "description": "Contribution statement, novelty claims, differentiation, research questions"},
+      {"file": "claims.json", "description": "Claim-evidence chain entries"}
+    ]
+  },
+  "03": {
+    "phase_name": "architect",
+    "artifacts": [
+      {"file": "architecture.md", "description": "System overview, components, novel vs adapted, assumptions"}
+    ]
+  },
+  "04": {
+    "phase_name": "evaluate",
+    "artifacts": [
+      {"file": "evaluation.md", "description": "Experiment design, results, claim-evidence mapping, limitations"}
+    ]
+  },
+  "05": {
+    "phase_name": "write",
+    "artifacts": [
+      {"file": "drafts/v1-draft.md", "description": "Full paper draft with all standard sections"}
+    ]
+  },
+  "06": {
+    "phase_name": "critique",
+    "artifacts": [
+      {"file": "critique-report.md", "description": "3-reviewer critique + meta-review + audit"}
+    ]
+  },
+  "07": {
+    "phase_name": "refine",
+    "artifacts": [
+      {"file": "drafts/v2-refined.md", "description": "Refined paper draft addressing critique"},
+      {"file": "drafts/v2-changelog.md", "description": "Changelog documenting all changes"}
+    ]
+  },
+  "08": {
+    "phase_name": "ship",
+    "artifacts": [
+      {"file": "venue-recommendation.md", "description": "Venue recommendations with match scores, deadlines, formatting notes"}
+    ]
+  }
+}

@@ -23,6 +23,7 @@ SCRIPT_ALIASES = {
     "synthesize": "synthesize/synthesizer.py",
     "cleanup": "utils/cleanup_manager.py",
     "eval": "eval/eval_runner.py",
+    "optimize": "optimize/backup_manager.py",
 }
 
 
