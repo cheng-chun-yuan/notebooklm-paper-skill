@@ -6,6 +6,9 @@ SKILL_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 LOCAL_VERSION=$(cat "$SKILL_DIR/VERSION" 2>/dev/null || echo "0.0.0")
 
 if [ -d "$SKILL_DIR/.git" ]; then
+  # Fetch latest from remote (quiet, timeout 5s to avoid blocking startup)
+  timeout 5 git -C "$SKILL_DIR" fetch origin main --quiet --no-tags 2>/dev/null || true
+
   REMOTE_VERSION=$(git -C "$SKILL_DIR" show origin/main:VERSION 2>/dev/null || echo "")
   if [ -n "$REMOTE_VERSION" ] && [ "$REMOTE_VERSION" != "$LOCAL_VERSION" ]; then
     echo "UPGRADE_AVAILABLE $LOCAL_VERSION $REMOTE_VERSION"
