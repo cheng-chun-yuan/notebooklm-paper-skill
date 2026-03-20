@@ -3,7 +3,7 @@ set -euo pipefail
 
 SKILL_DIR="$(cd "$(dirname "$0")" && pwd)"
 VENV="$SKILL_DIR/.venv"
-DATA_DIR="$HOME/.notebooklm-paper-skill"
+DATA_DIR="$HOME/.notebooklm-paper"
 
 echo "=== paper-skill setup ==="
 

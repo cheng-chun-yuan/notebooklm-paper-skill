@@ -22,7 +22,7 @@ All prior phase outputs:
 ## Variable Shortcuts
 
 ```bash
-PAPER_SKILL=~/.claude/skills/notebooklm-paper-skill
+PAPER_SKILL=~/.claude/skills/notebooklm-paper
 PY=$PAPER_SKILL/.venv/bin/python3
 ```
 
@@ -128,7 +128,7 @@ A domain-agnostic skeleton showing the shape of good output:
 
 ## Workflow
 
-Before starting, read all input artifacts from `~/.notebooklm-paper-skill/projects/{name}/`. Verify they exist. If any are missing, flag which phases need to be completed first.
+Before starting, read all input artifacts from `~/.notebooklm-paper/projects/{name}/`. Verify they exist. If any are missing, flag which phases need to be completed first.
 
 ### Critical Guard — Claim Validation
 
@@ -257,7 +257,7 @@ Generate each section in order. For each section, read the specified source arti
 Write the complete draft to:
 
 ```
-~/.notebooklm-paper-skill/projects/{name}/drafts/v1-draft.md
+~/.notebooklm-paper/projects/{name}/drafts/v1-draft.md
 ```
 
 Create the `drafts/` subdirectory if it does not exist.

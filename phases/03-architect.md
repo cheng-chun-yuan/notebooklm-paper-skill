@@ -10,13 +10,13 @@ Transforms the contribution statement and inspiration into a concrete system or 
 ## Variables
 
 ```bash
-PY=~/.claude/skills/notebooklm-paper-skill/.venv/bin/python3
-SKILL=~/.claude/skills/notebooklm-paper-skill
+PY=~/.claude/skills/notebooklm-paper/.venv/bin/python3
+SKILL=~/.claude/skills/notebooklm-paper
 ```
 
 ## Input
 
-Read from the active project directory (`~/.notebooklm-paper-skill/projects/{name}/`):
+Read from the active project directory (`~/.notebooklm-paper/projects/{name}/`):
 - `position.md` — contribution statement, novelty claims, research questions
 - `inspiration-map.md` — transferable methods and building blocks from the discover phase
 
@@ -26,8 +26,8 @@ If `position.md` is missing, warn the user and recommend `/paper position`.
 
 | Shortcut | Expansion |
 |----------|-----------|
-| `$PY` | `~/.claude/skills/notebooklm-paper-skill/.venv/bin/python3` |
-| `$SKILL` | `~/.claude/skills/notebooklm-paper-skill` |
+| `$PY` | `~/.claude/skills/notebooklm-paper/.venv/bin/python3` |
+| `$SKILL` | `~/.claude/skills/notebooklm-paper` |
 
 ## Quality Rubric
 
@@ -216,7 +216,7 @@ $PY $SKILL/scripts/run.py scorecard update "Component justification" met archite
 
 ## Output
 
-Write `~/.notebooklm-paper-skill/projects/{name}/architecture.md` with this structure:
+Write `~/.notebooklm-paper/projects/{name}/architecture.md` with this structure:
 
 ```markdown
 # Architecture — {Project Name}

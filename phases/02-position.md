@@ -10,13 +10,13 @@ Transforms gap analysis and scouted inspiration into a clear contribution statem
 ## Variables
 
 ```bash
-PY=~/.claude/skills/notebooklm-paper-skill/.venv/bin/python3
-SKILL=~/.claude/skills/notebooklm-paper-skill
+PY=~/.claude/skills/notebooklm-paper/.venv/bin/python3
+SKILL=~/.claude/skills/notebooklm-paper
 ```
 
 ## Input
 
-Read from the active project directory (`~/.notebooklm-paper-skill/projects/{name}/`):
+Read from the active project directory (`~/.notebooklm-paper/projects/{name}/`):
 - `gaps.md` — prioritized research gaps from the discover phase
 - `inspiration-map.md` — transferable methods and ideas from the discover phase
 
@@ -195,7 +195,7 @@ Check: is the novelty strong enough based on field expectations? If the scorecar
 
 ## Output
 
-Write `~/.notebooklm-paper-skill/projects/{name}/position.md` with this structure:
+Write `~/.notebooklm-paper/projects/{name}/position.md` with this structure:
 
 ```markdown
 # Position — {Project Name}

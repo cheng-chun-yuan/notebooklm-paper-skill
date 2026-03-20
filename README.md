@@ -1,4 +1,4 @@
-# notebooklm-paper-skill
+# notebooklm-paper
 
 Your AI research advisor. An 8-phase pipeline that guides you from "I have a topic" to "paper submitted" — with acceptance scorecard, claim-evidence tracking, and simulated peer review.
 
@@ -49,14 +49,14 @@ Discover → Position → Architect → Evaluate → Write → Critique → Refi
 **Requirements:** [Claude Code](https://docs.anthropic.com/en/docs/claude-code) + Python 3.11+
 
 ```bash
-git clone https://github.com/cheng-chun-yuan/notebooklm-paper-skill.git ~/.claude/skills/notebooklm-paper-skill
-cd ~/.claude/skills/notebooklm-paper-skill && ./setup
+git clone https://github.com/cheng-chun-yuan/notebooklm-paper.git ~/.claude/skills/notebooklm-paper
+cd ~/.claude/skills/notebooklm-paper && ./setup
 ```
 
 Then add to `~/.claude/CLAUDE.md`:
 
 ```markdown
-## notebooklm-paper-skill
+## notebooklm-paper
 
 - Available skills: /paper, /paper discover, /paper position, /paper architect, /paper evaluate, /paper write, /paper critique, /paper refine, /paper ship, /paper auth, /paper store, /paper search, /paper analyze, /paper eval, /paper optimize
 ```

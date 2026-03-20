@@ -8,9 +8,9 @@ Phases that require creative reasoning (Position, Architect, Write, Critique, Re
 
 ## Why global storage with project linking
 
-Papers are reusable across projects. A paper analyzed for project A might be relevant to project B. `~/.notebooklm-paper-skill/` is the research database. Each project gets its own directory under `~/.notebooklm-paper-skill/projects/{name}/` with phase artifacts, cross-cutting JSON files, and drafts.
+Papers are reusable across projects. A paper analyzed for project A might be relevant to project B. `~/.notebooklm-paper/` is the research database. Each project gets its own directory under `~/.notebooklm-paper/projects/{name}/` with phase artifacts, cross-cutting JSON files, and drafts.
 
-Project-local linking: when working in a project directory, `RESEARCH_SYNTHESIS.md` is generated there (committed to git), and `.notebooklm-paper-skill/project.json` links back to the global project (gitignored).
+Project-local linking: when working in a project directory, `RESEARCH_SYNTHESIS.md` is generated there (committed to git), and `.notebooklm-paper/project.json` links back to the global project (gitignored).
 
 ## Why 8 phases
 

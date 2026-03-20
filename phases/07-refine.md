@@ -16,7 +16,7 @@ phase: 7
 ## Variable Shortcuts
 
 ```bash
-PAPER_SKILL=~/.claude/skills/notebooklm-paper-skill
+PAPER_SKILL=~/.claude/skills/notebooklm-paper
 PY=$PAPER_SKILL/.venv/bin/python3
 ```
 
@@ -172,13 +172,13 @@ Apply all changes to produce `v2-refined.md`. The refined draft should:
 Write the refined draft to:
 
 ```
-~/.notebooklm-paper-skill/projects/{name}/drafts/v2-refined.md
+~/.notebooklm-paper/projects/{name}/drafts/v2-refined.md
 ```
 
 Also write a change log:
 
 ```
-~/.notebooklm-paper-skill/projects/{name}/drafts/v2-changelog.md
+~/.notebooklm-paper/projects/{name}/drafts/v2-changelog.md
 ```
 
 The changelog format:

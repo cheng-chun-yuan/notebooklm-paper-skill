@@ -16,7 +16,7 @@ phase: 8
 ## Variable Shortcuts
 
 ```bash
-PAPER_SKILL=~/.claude/skills/notebooklm-paper-skill
+PAPER_SKILL=~/.claude/skills/notebooklm-paper
 PY=$PAPER_SKILL/.venv/bin/python3
 ```
 
@@ -192,7 +192,7 @@ For the top recommended venue:
 Write the venue recommendation to:
 
 ```
-~/.notebooklm-paper-skill/projects/{name}/venue-recommendation.md
+~/.notebooklm-paper/projects/{name}/venue-recommendation.md
 ```
 
 Use this format:

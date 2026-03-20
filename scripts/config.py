@@ -10,7 +10,7 @@ from pathlib import Path
 
 # Paths
 SKILL_DIR = Path(__file__).parent.parent
-DATA_DIR = Path.home() / ".notebooklm-paper-skill"
+DATA_DIR = Path.home() / ".notebooklm-paper"
 PAPERS_DIR = DATA_DIR / "papers"
 ANALYSES_DIR = DATA_DIR / "analyses"
 GAPS_DIR = DATA_DIR / "gaps"

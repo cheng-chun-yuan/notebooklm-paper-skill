@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Read/write ~/.notebooklm-paper-skill/config.json
+# Read/write ~/.notebooklm-paper/config.json
 set -euo pipefail
 
-CONFIG="$HOME/.notebooklm-paper-skill/config.json"
+CONFIG="$HOME/.notebooklm-paper/config.json"
 
 if [ ! -f "$CONFIG" ]; then
   echo '{}' > "$CONFIG"

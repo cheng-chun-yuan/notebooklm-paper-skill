@@ -42,8 +42,8 @@
 - Python eval runner (`scripts/eval/eval_runner.py`)
 
 ### Fixes
-- All paths updated from `paper-skill` to `notebooklm-paper-skill`
-- Data directory moved to `~/.notebooklm-paper-skill/`
+- All paths updated from `paper-skill` to `notebooklm-paper`
+- Data directory moved to `~/.notebooklm-paper/`
 
 ## 0.1.0 (2026-03-20)
 

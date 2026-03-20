@@ -8,7 +8,7 @@ description: "Research paper pipeline in 8 phases: Discover → Position → Arc
 ## Preamble (run first)
 
 ```bash
-PAPER_SKILL=~/.claude/skills/notebooklm-paper-skill
+PAPER_SKILL=~/.claude/skills/notebooklm-paper
 VENV=$PAPER_SKILL/.venv
 PY="$VENV/bin/python3"
 if [ ! -d "$VENV" ] || [ ! -x "$PY" ]; then
@@ -22,15 +22,15 @@ _UPD=$("$PAPER_SKILL/bin/paper-update-check" 2>/dev/null || true)
 echo "VERSION: $_VERSION"
 [ -n "$_UPD" ] && echo "$_UPD"
 
-mkdir -p ~/.notebooklm-paper-skill/sessions ~/.notebooklm-paper-skill/projects
-touch ~/.notebooklm-paper-skill/sessions/"$PPID"
-find ~/.notebooklm-paper-skill/sessions -mmin +120 -type f -delete 2>/dev/null || true
+mkdir -p ~/.notebooklm-paper/sessions ~/.notebooklm-paper/projects
+touch ~/.notebooklm-paper/sessions/"$PPID"
+find ~/.notebooklm-paper/sessions -mmin +120 -type f -delete 2>/dev/null || true
 _AUTH=$("$PY" "$PAPER_SKILL/scripts/run.py" auth status --quiet 2>/dev/null || echo "NO_AUTH")
 echo "AUTH: $_AUTH"
 
 _PROJECT=$("$PY" -c "
 import pathlib, json
-projects_dir = pathlib.Path.home() / '.notebooklm-paper-skill' / 'projects'
+projects_dir = pathlib.Path.home() / '.notebooklm-paper' / 'projects'
 if not projects_dir.exists():
     print('none'); exit()
 for pf in projects_dir.glob('*/project.json'):
@@ -76,7 +76,7 @@ E) Draft exists — "Paper is written, needs feedback"
    → /paper critique
 
 F) Continue previous project
-   → list projects from ~/.notebooklm-paper-skill/projects/
+   → list projects from ~/.notebooklm-paper/projects/
 ```
 
 When user picks an option:
@@ -211,8 +211,8 @@ Every phase exits with one of:
 ## Cross-Cutting Commands Reference
 
 ```bash
-PY=~/.claude/skills/notebooklm-paper-skill/.venv/bin/python3
-SKILL=~/.claude/skills/notebooklm-paper-skill
+PY=~/.claude/skills/notebooklm-paper/.venv/bin/python3
+SKILL=~/.claude/skills/notebooklm-paper
 
 # Scorecard
 $PY $SKILL/scripts/run.py scorecard show

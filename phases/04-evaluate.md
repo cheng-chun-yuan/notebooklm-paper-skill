@@ -10,13 +10,13 @@ Designs the evaluation plan, then analyzes results to validate each claim from t
 ## Variables
 
 ```bash
-PY=~/.claude/skills/notebooklm-paper-skill/.venv/bin/python3
-SKILL=~/.claude/skills/notebooklm-paper-skill
+PY=~/.claude/skills/notebooklm-paper/.venv/bin/python3
+SKILL=~/.claude/skills/notebooklm-paper
 ```
 
 ## Input
 
-Read from the active project directory (`~/.notebooklm-paper-skill/projects/{name}/`):
+Read from the active project directory (`~/.notebooklm-paper/projects/{name}/`):
 - `architecture.md` — system design with components and gap mappings
 - `position.md` — claims and research questions
 
@@ -199,7 +199,7 @@ These feed directly into the paper's Limitations section.
 
 ## Output
 
-Write `~/.notebooklm-paper-skill/projects/{name}/evaluation.md` with this structure:
+Write `~/.notebooklm-paper/projects/{name}/evaluation.md` with this structure:
 
 ```markdown
 # Evaluation — {Project Name}

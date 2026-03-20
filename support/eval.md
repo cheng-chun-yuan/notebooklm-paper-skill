@@ -10,7 +10,7 @@ Run binary eval criteria against your phase outputs to measure quality objective
 ## Variable Shortcuts
 
 ```bash
-PAPER_SKILL=~/.claude/skills/notebooklm-paper-skill
+PAPER_SKILL=~/.claude/skills/notebooklm-paper
 PY=$PAPER_SKILL/.venv/bin/python3
 ```
 
