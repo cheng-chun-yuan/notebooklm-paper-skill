@@ -1,36 +1,44 @@
 {
   "items": [
     {
+      "type": "file",
+      "ctime": 1710892800000,
+      "title": "CATALOG",
+      "path": "CATALOG.md"
+    },
+    {
       "type": "folder",
       "ctime": 1710892800000,
-      "title": "Projects",
+      "title": "Raw Papers",
       "items": [
         {
           "type": "folder",
           "ctime": 1710892800000,
-          "path": "projects"
+          "path": "raw"
         }
       ]
     },
     {
       "type": "folder",
       "ctime": 1710892800000,
-      "title": "Library",
+      "title": "Wiki",
       "items": [
         {
           "type": "folder",
           "ctime": 1710892800000,
-          "path": "papers"
-        },
+          "path": "wiki"
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "ctime": 1710892800000,
+      "title": "Q&A",
+      "items": [
         {
           "type": "folder",
           "ctime": 1710892800000,
-          "path": "analyses"
-        },
-        {
-          "type": "folder",
-          "ctime": 1710892800000,
-          "path": "gaps"
+          "path": "qa"
         }
       ]
     }
