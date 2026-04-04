@@ -9,13 +9,13 @@ phase: 6
 ## Variable Shortcuts
 
 ```bash
-PAPER_SKILL=~/.claude/skills/notebooklm-paper
+PAPER_SKILL=~/.claude/skills/paper
 PY=$PAPER_SKILL/.venv/bin/python3
 ```
 
 ## Input
 
-All artifacts from `~/.notebooklm-paper/projects/{name}/`:
+All artifacts from `~/.paper/projects/{name}/`:
 - `drafts/v1-draft.md` (or latest draft)
 - `field-map.md`
 - `gaps.md`
@@ -229,7 +229,7 @@ PATH TO 85%: Fix items 1, 2, 3 from "Fix before submit" (+20%), promote scaling 
 
 ## Workflow
 
-Read all artifacts from `~/.notebooklm-paper/projects/{name}/`. This phase has two stages — run them in order.
+Read all artifacts from `~/.paper/projects/{name}/`. This phase has two stages — run them in order.
 
 ---
 
@@ -470,7 +470,7 @@ $PY $PAPER_SKILL/scripts/run.py scorecard show
 Write the complete critique report (both stages combined) to:
 
 ```
-~/.notebooklm-paper/projects/{name}/critique-report.md
+~/.paper/projects/{name}/critique-report.md
 ```
 
 Use the structure shown in the Structural Exemplar above: Stage A (3 reviewer reports + meta-review) followed by Stage B (6 audit categories + summary with readiness score and acceptance probability).

@@ -14,7 +14,7 @@ phase: 1
 ## Variable Shortcuts
 
 ```bash
-PAPER_SKILL=~/.claude/skills/notebooklm-paper
+PAPER_SKILL=~/.claude/skills/paper
 PY=$PAPER_SKILL/.venv/bin/python3
 ```
 
@@ -265,7 +265,7 @@ Write `field-map.md` to the project directory. It must contain:
 6. **Rejection Signals** — Common reviewer complaints
 7. **Scorecard Summary** — List of requirements and weights
 
-Save location: `~/.notebooklm-paper/projects/{name}/field-map.md`
+Save location: `~/.paper/projects/{name}/field-map.md`
 
 ---
 
@@ -347,7 +347,7 @@ Compute a composite score: `importance * 0.4 + feasibility * 0.3 + novelty * 0.3
 
 #### B5 — Write gaps.md
 
-Save the aggregated analysis to `~/.notebooklm-paper/projects/{name}/gaps.md`. Follow the structure shown in the Structural Exemplar above.
+Save the aggregated analysis to `~/.paper/projects/{name}/gaps.md`. Follow the structure shown in the Structural Exemplar above.
 
 ---
 
@@ -418,13 +418,13 @@ After finding partial methods, analyze whether they can be combined:
 
 #### C5 — Build inspiration map
 
-Compile all findings into `~/.notebooklm-paper/projects/{name}/inspiration-map.md`. Follow the structure shown in the Structural Exemplar above.
+Compile all findings into `~/.paper/projects/{name}/inspiration-map.md`. Follow the structure shown in the Structural Exemplar above.
 
 ---
 
 ## Output
 
-This phase produces the following artifacts in `~/.notebooklm-paper/projects/{name}/`:
+This phase produces the following artifacts in `~/.paper/projects/{name}/`:
 
 | File | Stage | Required? | Description |
 |------|-------|-----------|-------------|

@@ -29,7 +29,7 @@
 - Autoresearch-style mutation loop design
 
 ### Path Fix ✓
-- All paths updated to `~/.claude/skills/notebooklm-paper`
+- All paths updated to `~/.claude/skills/paper`
 
 ### Eng Review Fixes (2026-03-21) ✓
 - Eval criteria IDs renumbered from old 11-phase (P4-*, P10-*, P11-*) to new 8-phase (P01-* through P08-*)

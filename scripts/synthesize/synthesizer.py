@@ -26,8 +26,8 @@ def save_synthesis(project_name: str, content: str, working_dir: str = None):
             wd_synthesis.write_text(content)
             print(f"Saved working copy: {wd_synthesis}")
 
-            # Create .notebooklm-paper/project.json link-back
-            ps_dir = wd / ".notebooklm-paper"
+            # Create .paper/project.json link-back
+            ps_dir = wd / ".paper"
             ps_dir.mkdir(exist_ok=True)
             link_back = {
                 "project_name": project_name,
@@ -35,9 +35,9 @@ def save_synthesis(project_name: str, content: str, working_dir: str = None):
             }
             (ps_dir / "project.json").write_text(json.dumps(link_back, indent=2))
 
-            # Add .notebooklm-paper/ to .gitignore if not already there
+            # Add .paper/ to .gitignore if not already there
             gitignore = wd / ".gitignore"
-            marker = ".notebooklm-paper/"
+            marker = ".paper/"
             if gitignore.exists():
                 existing = gitignore.read_text()
                 if marker not in existing:

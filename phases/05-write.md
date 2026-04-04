@@ -22,7 +22,7 @@ All prior phase outputs:
 ## Variable Shortcuts
 
 ```bash
-PAPER_SKILL=~/.claude/skills/notebooklm-paper
+PAPER_SKILL=~/.claude/skills/paper
 PY=$PAPER_SKILL/.venv/bin/python3
 ```
 
@@ -126,9 +126,64 @@ A domain-agnostic skeleton showing the shape of good output:
 [Restate contribution | Key numbers | Significance | Forward look]
 ```
 
+## Sentence Skeleton Templates
+
+Use these fill-in-the-blank patterns when drafting each section. Pick the version that best fits the paper's story. Adapt wording but preserve the rhetorical structure.
+
+### Abstract Templates
+
+**V1 — Challenge → Contribution:**
+> [Task] is essential for [domain/application]. However, existing methods struggle with [challenge] due to [root cause]. We propose [method name], which [core mechanism in one clause]. On [benchmark(s)], [method name] achieves [metric + number], outperforming [strongest baseline] by [margin]. Our results suggest [one-sentence implication].
+
+**V2 — Challenge → Insight → Contribution:**
+> [Same opening as V1]. We observe that [key insight — a non-obvious property or pattern]. Based on this insight, we propose [method name], which [mechanism grounded in the insight]. [Results sentence]. [Implication sentence].
+
+**V3 — Multiple Contributions:**
+> [Problem + challenge in 2 sentences]. To address this, we make three contributions: (1) we propose [X], which enables [advantage A]; (2) we introduce [Y], reducing [metric] by [number]; (3) we release [Z] for reproducibility. Experiments on [benchmarks] show [headline result].
+
+### Introduction Skeleton
+
+**Pre-step — Backward Reasoning (answer before writing):**
+Before drafting, answer these four questions using gaps.md and position.md:
+1. What technical problem do we solve, and why is there no established solution?
+2. What are our contributions? (numbered list)
+3. What concrete benefits or insights do the contributions bring?
+4. What prior work must the reader understand to appreciate our challenge?
+
+**Then write forward:**
+
+**Para A — Task & Importance (pick one):**
+- *Application-driven:* "[Application] has become critical for [reason]. A core technical challenge is [task]: given [input], produce [output] that satisfies [constraint]."
+- *Research-gap-driven:* "Despite rapid progress in [broad area], [specific task] remains underexplored because [reason]."
+
+**Para B — Technical Challenge (pick one):**
+- *Existing-methods-fail:* "Current approaches to [task] fall into [family A] and [family B]. [Family A] methods (Author 2020; Author 2021) achieve [strength] but suffer from [limitation]. [Family B] methods address [limitation] yet introduce [new problem]. Neither family adequately handles [the gap from gaps.md]."
+- *New-task:* "While [related area] has mature solutions, [our task] differs fundamentally in [dimension], making existing techniques inapplicable because [specific reason]."
+
+**Para C — Our Approach:**
+> "To address [challenge from Para B], we propose [method name]. The key insight is [one sentence from position.md]. Concretely, [method name] consists of [high-level component list]. Unlike [closest prior work], our approach [key differentiator]."
+
+**Para D — Contributions:**
+> "Our contributions are: (1) We propose [X], which [achieves what — specific]; (2) We demonstrate [result] through experiments on [benchmarks], showing [number]; (3) We release [artifact] for reproducibility."
+
+### Method — Three-Element Module Pattern
+
+For each module/component in the method section, write in this order:
+
+1. **Motivation** — Why this module exists:
+   > "Because [problem X from gaps.md] causes [concrete negative effect], we need a mechanism that [desired property]."
+
+2. **Design** — What it does (input → steps → output):
+   > "Given [input with notation], [module name] first [step 1], then [step 2], producing [output]. Formally: [equation or pseudocode]."
+
+3. **Technical Advantage** — Why this design over alternatives:
+   > "Compared to [alternative approach], [module name] [specific advantage] because [technical reason]. This reduces [metric] from [old] to [new] / enables [capability that was previously impossible]."
+
+Draw or reference the pipeline figure BEFORE writing module text. Each module subsection follows: Motivation → Design → Advantage. No module should lack any of the three.
+
 ## Workflow
 
-Before starting, read all input artifacts from `~/.notebooklm-paper/projects/{name}/`. Verify they exist. If any are missing, flag which phases need to be completed first.
+Before starting, read all input artifacts from `~/.paper/projects/{name}/`. Verify they exist. If any are missing, flag which phases need to be completed first.
 
 ### Critical Guard — Claim Validation
 
@@ -257,7 +312,7 @@ Generate each section in order. For each section, read the specified source arti
 Write the complete draft to:
 
 ```
-~/.notebooklm-paper/projects/{name}/drafts/v1-draft.md
+~/.paper/projects/{name}/drafts/v1-draft.md
 ```
 
 Create the `drafts/` subdirectory if it does not exist.

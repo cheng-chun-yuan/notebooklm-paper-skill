@@ -10,7 +10,7 @@ Collects user ratings and comments after each phase to improve the skill over ti
 ## Command
 
 ```bash
-SKILL=~/.claude/skills/notebooklm-paper
+SKILL=~/.claude/skills/paper
 
 $SKILL/bin/paper-feedback <phase> <rating> "<comment>"
 ```
@@ -33,7 +33,7 @@ After each phase completes, the phase transition template prompts: "Rate this ph
 
 ## Feedback File Format
 
-Files are stored at `~/.notebooklm-paper/feedback/` with the naming pattern `YYYY-MM-DD-<phase>.md`.
+Files are stored at `~/.paper/feedback/` with the naming pattern `YYYY-MM-DD-<phase>.md`.
 
 Each file has YAML frontmatter:
 
@@ -51,7 +51,7 @@ The search results were comprehensive but took too long.
 
 ## Aggregation
 
-To review collected feedback, read all files from `~/.notebooklm-paper/feedback/` and summarize:
+To review collected feedback, read all files from `~/.paper/feedback/` and summarize:
 
 1. List each phase with its average rating across all feedback entries
 2. Highlight phases with average rating below 3 as needing attention

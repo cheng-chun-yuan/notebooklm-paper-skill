@@ -3,7 +3,15 @@ set -euo pipefail
 
 SKILL_DIR="$(cd "$(dirname "$0")" && pwd)"
 VENV="$SKILL_DIR/.venv"
-DATA_DIR="$HOME/.notebooklm-paper"
+DATA_DIR="$HOME/.paper"
+
+# Migrate from .notebooklm-paper if present
+OLD_DATA="$HOME/.notebooklm-paper"
+NEW_DATA="$HOME/.paper"
+if [ -d "$OLD_DATA" ] && [ ! -d "$NEW_DATA" ]; then
+  echo "Migrating data from $OLD_DATA to $NEW_DATA..."
+  mv "$OLD_DATA" "$NEW_DATA"
+fi
 
 echo "=== paper-skill setup ==="
 

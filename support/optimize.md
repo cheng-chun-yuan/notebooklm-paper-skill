@@ -10,7 +10,7 @@ Adapted from the autoresearch pattern: autonomously improve a phase's SKILL.md t
 ## Variable Shortcuts
 
 ```bash
-PAPER_SKILL=~/.claude/skills/notebooklm-paper
+PAPER_SKILL=~/.claude/skills/paper
 PY=$PAPER_SKILL/.venv/bin/python3
 ```
 
@@ -132,7 +132,7 @@ Changelog saved to: {path}
 
 Save the optimization log to:
 ```
-~/.notebooklm-paper/optimize/{phase}-{timestamp}/
+~/.paper/optimize/{phase}-{timestamp}/
 ├── changelog.md        # Detailed mutation log
 ├── baseline.md         # Original SKILL.md backup
 ├── results.json        # Per-experiment scores
@@ -150,7 +150,7 @@ Save the optimization log to:
 
 ## Feedback Integration
 
-If the project has feedback data (`~/.notebooklm-paper/feedback/`), read it before starting:
+If the project has feedback data (`~/.paper/feedback/`), read it before starting:
 - Low ratings (1-3) on a phase suggest specific areas to target
 - Comments from users provide qualitative signal about what's weak
 - Weight mutations toward addressing feedback themes

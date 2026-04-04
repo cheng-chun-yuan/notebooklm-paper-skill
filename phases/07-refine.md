@@ -16,7 +16,7 @@ phase: 7
 ## Variable Shortcuts
 
 ```bash
-PAPER_SKILL=~/.claude/skills/notebooklm-paper
+PAPER_SKILL=~/.claude/skills/paper
 PY=$PAPER_SKILL/.venv/bin/python3
 ```
 
@@ -149,6 +149,21 @@ All claims should have strong or moderate evidence. If any remain unsupported:
 - Either add evidence (may require going back to `/paper evaluate`)
 - Or remove/weaken the claim in the draft
 
+### Step 4.5 — Reverse Outline Verification
+
+After claim re-check, verify narrative coherence at the paragraph level:
+
+1. **Extract topic sentences** — For each paragraph in v2, identify its single main point (usually the first sentence).
+2. **Build reverse outline** — List the topic sentences in order. Read only the outline — does it tell a coherent story from problem → method → evidence → impact?
+3. **Check paragraph-to-thesis mapping** — Every paragraph's topic sentence must support the section's thesis. Flag any paragraph that cannot be mapped → candidate for deletion or rewrite.
+4. **Check inter-paragraph flow** — Between consecutive paragraphs, there should be a logical connector (cause/contrast/consequence/refinement/example). Flag any abrupt transitions where the reader would ask "why is this here now?"
+5. **Fix issues found:**
+   - Unmappable paragraphs → delete, merge into adjacent paragraph, or rewrite with clear connection
+   - Missing transitions → add a linking sentence or connective phrase
+   - Topic sentence buried mid-paragraph → promote it to the opening position
+
+Document any changes in v2-changelog.md under a "Narrative Coherence" subsection.
+
 ### Step 5 — Re-check Scorecard
 
 ```bash
@@ -172,13 +187,13 @@ Apply all changes to produce `v2-refined.md`. The refined draft should:
 Write the refined draft to:
 
 ```
-~/.notebooklm-paper/projects/{name}/drafts/v2-refined.md
+~/.paper/projects/{name}/drafts/v2-refined.md
 ```
 
 Also write a change log:
 
 ```
-~/.notebooklm-paper/projects/{name}/drafts/v2-changelog.md
+~/.paper/projects/{name}/drafts/v2-changelog.md
 ```
 
 The changelog format:
@@ -231,6 +246,7 @@ Before completing this phase, verify:
 - [ ] Claims re-check shows no unsupported claims
 - [ ] Scorecard re-check shows improvement over pre-refine state
 - [ ] No new unsupported claims were introduced
+- [ ] Reverse outline verification passed — no unmappable paragraphs, no abrupt transitions
 
 If any check fails, continue fixing before transitioning.
 

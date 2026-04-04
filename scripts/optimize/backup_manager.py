@@ -18,8 +18,8 @@ PHASE_NAMES = {
     "08": "ship",
 }
 
-PHASES_DIR = Path.home() / ".claude" / "skills" / "notebooklm-paper" / "phases"
-BACKUP_DIR = Path.home() / ".notebooklm-paper" / "optimize-backups"
+PHASES_DIR = Path.home() / ".claude" / "skills" / "paper" / "phases"
+BACKUP_DIR = Path.home() / ".paper" / "optimize-backups"
 
 
 def resolve_phase(phase_input: str) -> tuple[str, Path]:
