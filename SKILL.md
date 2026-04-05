@@ -45,7 +45,7 @@ F) Ready to write — "I know my angle, time to write the paper"
    → /paper position → architect → evaluate → write → critique → refine → ship
 
 G) Continue previous project
-   → list .paper files or projects from ~/.paper/projects/
+   → Look for .paper in current or parent directories
 ```
 
 When user picks an option:
@@ -199,9 +199,7 @@ If user rates 5: ask "What worked well?" and save positive feedback too.
 
 After transition, update project state:
 ```bash
-# Update .paper if present, fallback to project.json
-if [ -f .paper ]; then
-  $PY -c "
+$PY -c "
 from pathlib import Path
 from scripts.core.dotpaper import find_dotpaper, load_dotpaper, save_dotpaper
 dp_dir = find_dotpaper(Path('.'))
@@ -210,17 +208,9 @@ if dp_dir:
     dp['phases_completed'].append('{current_phase}')
     dp['phase'] = '{next_phase_name}'
     save_dotpaper(dp_dir, dp)
+else:
+    print('No .paper found — run /paper init first')
 "
-else
-  $PY -c "
-from scripts.config import load_project, save_project, get_active_project
-p = get_active_project()
-p['phases_completed'].append('{current_phase}')
-p['current_phase'] = {next_phase_number}
-p['phase_name'] = '{next_phase_name}'
-save_project(p)
-"
-fi
 ```
 
 ## Backtrack Triggers
