@@ -512,7 +512,7 @@ After papers are downloaded and analyzed, check for an active vault:
 
 ```bash
 VAULT=$($PY -c "from scripts.config import get_vault_dir; print(get_vault_dir())" 2>/dev/null)
-if [ -n "$VAULT" ] && [ -d "$VAULT/raw" ]; then
+if [ -n "$VAULT" ] && [ -d "$VAULT/sources" ]; then
   echo "VAULT_ACTIVE"
 fi
 ```
@@ -524,7 +524,7 @@ If yes:
 $PY $PAPER_SKILL/scripts/run.py vault ingest <papers-directory>
 ```
 
-This copies downloaded papers into `vault/raw/` and rebuilds CATALOG.md. The user can then run `/paper digest` to compile wiki articles from these papers.
+This copies downloaded papers into `vault/sources/` and rebuilds CATALOG.md. The user can then run `/paper digest` to compile wiki articles from these papers.
 
 ## Phase Transition
 

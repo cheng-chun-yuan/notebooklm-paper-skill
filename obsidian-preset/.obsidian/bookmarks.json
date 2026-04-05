@@ -9,36 +9,60 @@
     {
       "type": "folder",
       "ctime": 1710892800000,
-      "title": "Raw Papers",
+      "title": "Sources",
       "items": [
         {
           "type": "folder",
           "ctime": 1710892800000,
-          "path": "raw"
+          "path": "sources"
         }
       ]
     },
     {
       "type": "folder",
       "ctime": 1710892800000,
-      "title": "Wiki",
+      "title": "Notes",
       "items": [
         {
           "type": "folder",
           "ctime": 1710892800000,
-          "path": "wiki"
+          "path": "notes"
         }
       ]
     },
     {
       "type": "folder",
       "ctime": 1710892800000,
-      "title": "Q&A",
+      "title": "Concepts",
       "items": [
         {
           "type": "folder",
           "ctime": 1710892800000,
-          "path": "qa"
+          "path": "concepts"
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "ctime": 1710892800000,
+      "title": "Questions",
+      "items": [
+        {
+          "type": "folder",
+          "ctime": 1710892800000,
+          "path": "questions"
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "ctime": 1710892800000,
+      "title": "Insights",
+      "items": [
+        {
+          "type": "folder",
+          "ctime": 1710892800000,
+          "path": "insights"
         }
       ]
     }

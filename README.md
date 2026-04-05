@@ -1,48 +1,6 @@
 # paper
 
-Your AI research advisor. An 8-phase pipeline that guides you from "I have a topic" to "paper submitted" — with acceptance scorecard, claim-evidence tracking, and simulated peer review.
-
-```
-Discover → Position → Architect → Evaluate → Write → Critique → Refine → Ship
-```
-
-## What it does
-
-### 8-Phase Research Pipeline
-
-| # | Phase | Command | What it does |
-|---|-------|---------|-------------|
-| 1 | **Discover** | `/paper discover` | Survey literature (arXiv + Semantic Scholar), analyze gaps with 6-question framework, scout cross-domain methods, build field map + acceptance scorecard |
-| 2 | **Position** | `/paper position` | Define contribution statement, novelty claims, and differentiation from closest papers |
-| 3 | **Architect** | `/paper architect` | Design method/system architecture with component-to-gap mapping |
-| 4 | **Evaluate** | `/paper evaluate` | Design experiments, analyze results, validate every claim with evidence strength |
-| 5 | **Write** | `/paper write` | Generate full paper draft with claim-evidence guard (refuses unsupported claims) |
-| 6 | **Critique** | `/paper critique` | 3 adversarial reviewer personas + 6-category pre-submission audit with readiness score |
-| 7 | **Refine** | `/paper refine` | Fix everything flagged by critique, produce v2 draft with changelog |
-| 8 | **Ship** | `/paper ship` | Match paper to target venue, extract formatting requirements, submission timeline |
-
-### 3 Cross-Cutting Quality Systems
-
-- **Acceptance Scorecard** (`scorecard.json`) — Built from surveyed papers in Phase 1. Lists venue requirements with frequency weights (0.0–1.0). Calculates acceptance probability.
-- **Claim-Evidence Chain** (`claims.json`) — Introduced in Phase 2. Tracks each claim with evidence strength: strong / moderate / weak / unsupported. Write phase refuses unsupported claims.
-- **Comparison Matrix** (`matrix.json`) — Tracks papers vs. dimensions. Auto-generates the comparison table for Related Work.
-
-### Self-Optimization
-
-- **`/paper eval`** — Binary eval criteria against phase outputs. Pass/fail quality checks.
-- **`/paper optimize`** — Autoresearch-style prompt mutation loops. Keeps improvements, reverts regressions.
-
-### Support Commands
-
-| Command | What it does |
-|---------|-------------|
-| `/paper` | Guided flow — shows progress and options |
-| `/paper search` | Paper search (arXiv + Semantic Scholar) |
-| `/paper analyze` | STAR framework analysis of a single paper |
-| `/paper store` | NotebookLM notebook management |
-| `/paper auth` | NotebookLM authentication setup |
-| `/paper eval` | Run quality evals on phase outputs |
-| `/paper optimize` | Self-optimize phase prompts |
+Your AI research advisor. An 8-phase pipeline from "I have a topic" to "paper submitted" — with an Obsidian knowledge base, NotebookLM integration, acceptance scorecard, and claim-evidence tracking.
 
 ## Install
 
@@ -53,45 +11,118 @@ git clone https://github.com/cheng-chun-yuan/notebooklm-paper.git ~/.claude/skil
 cd ~/.claude/skills/paper && ./setup
 ```
 
-Then add to `~/.claude/CLAUDE.md`:
+Add to `~/.claude/CLAUDE.md`:
 
 ```markdown
-## paper
+## paper skill
 
-- Available skills: /paper, /paper discover, /paper position, /paper architect, /paper evaluate, /paper write, /paper critique, /paper refine, /paper ship, /paper auth, /paper store, /paper search, /paper analyze, /paper eval, /paper optimize
+- Available skills: /paper, /paper init, /paper discover, /paper digest, /paper ask, /paper check, /paper position, /paper architect, /paper evaluate, /paper write, /paper critique, /paper refine, /paper ship, /paper auth, /paper store, /paper search, /paper analyze, /paper eval, /paper optimize
 ```
 
-## Quick start
+## Quick Start
 
 ```
-/paper
-→ Pick "Starting fresh"
-→ Give your research topic
-→ Follow the guided flow through each phase
+/paper init
 ```
 
+Walks you through setup:
+1. Research topic and goal
+2. Target venue, deadline, page limit
+3. Keywords for paper discovery
+4. NotebookLM notebook URL (optional)
+5. Obsidian vault path (default: `~/.paper/vaults/{project}`)
+
+Creates a `.paper` config file in your working directory and initializes an Obsidian vault with `sources/`, `notes/`, `concepts/`, `questions/`, and `insights/` folders.
+
+**Open the vault folder in Obsidian** to browse your research.
+
+## Usage
+
+### Research & Knowledge Base
+
+| Command | What you're thinking | What it does |
+|---------|---------------------|-------------|
+| `/paper discover` | "I need to find papers" | Search arXiv + Semantic Scholar, download papers, identify gaps. Auto-ingests to vault `sources/` |
+| `/paper digest` | "Let me organize what I know" | Two-pass: reads `sources/`, writes per-paper `notes/` (summary, findings, quotes), then synthesizes cross-paper `concepts/` with wikilinks |
+| `/paper ask` | "I have a question" | Q&A against your wiki. Answers auto-filed to `questions/` so explorations accumulate. Also logs NotebookLM conversations |
+| `/paper check` | "Am I missing anything?" | Health-check: uncompiled papers, broken links, thin articles, suggested new articles and research questions |
+
+### Paper Writing Pipeline
+
 ```
-[■■□□□□□□] Phase 2/8 — Position
-
-  ✓ Discover  — 23 papers, 4 gaps, 2 methods scouted
-  ► Position  — Defining contribution...
-  ○ Architect — Design your method
-  ○ Evaluate  — Experiments & results
-  ○ Write     — Generate paper draft
-  ○ Critique  — Peer review + audit
-  ○ Refine    — Fix & polish
-  ○ Ship      — Target venue & submit
+Discover → Position → Architect → Evaluate → Write → Critique → Refine → Ship
 ```
 
-## Design
+| # | Phase | Command | What it does |
+|---|-------|---------|-------------|
+| 1 | **Discover** | `/paper discover` | Survey literature, analyze gaps, scout cross-domain methods, build field map + scorecard |
+| 2 | **Position** | `/paper position` | Define contribution, novelty claims, differentiation from closest papers |
+| 3 | **Architect** | `/paper architect` | Design method/system with component-to-gap mapping |
+| 4 | **Evaluate** | `/paper evaluate` | Design experiments, validate every claim with evidence |
+| 5 | **Write** | `/paper write` | Generate full draft with claim-evidence guard (refuses unsupported claims) |
+| 6 | **Critique** | `/paper critique` | 3 adversarial reviewers + 6-category audit with readiness score |
+| 7 | **Refine** | `/paper refine` | Fix all flagged issues, produce v2 with changelog |
+| 8 | **Ship** | `/paper ship` | Match to venue, formatting requirements, submission timeline |
 
-- **Hybrid architecture** — SKILL.md (brain) + Python scripts (hands)
-- **Quality rubrics** — every phase has explicit standards + anti-patterns
-- **Binary evals** — automated pass/fail quality measurement
-- **Self-optimization** — autoresearch-style prompt improvement loops
-- **Backtracking** — non-destructive, all artifacts preserved
+### Quality Systems
 
-Inspired by [gstack](https://github.com/garrytan/gstack) and [autoresearch-skill](https://github.com/olelehmann100kMRR/autoresearch-skill).
+- **Acceptance Scorecard** — Venue requirements with frequency weights. Calculates acceptance probability.
+- **Claim-Evidence Chain** — Tracks claims with strength ratings. Write phase refuses unsupported claims.
+- **Comparison Matrix** — Papers vs. dimensions. Auto-generates Related Work table.
+
+### Other Commands
+
+| Command | What it does |
+|---------|-------------|
+| `/paper` | Guided menu — shows where you are and what to do next |
+| `/paper search` | Search arXiv + Semantic Scholar |
+| `/paper analyze` | STAR analysis of a single paper |
+| `/paper store` | NotebookLM notebook management |
+| `/paper auth` | NotebookLM authentication |
+| `/paper eval` | Quality evals on phase outputs |
+| `/paper optimize` | Autoresearch-style prompt improvement |
+
+## How It Works
+
+### `.paper` Config
+
+Each research project has a `.paper` file in the working directory:
+
+```yaml
+project: agent-identity
+topic: "Verifiable credentials for AI agent identity"
+goal: "Propose a framework binding agent actions to verifiable identity"
+venue: USENIX Security 2027
+deadline: 2027-02-01
+keywords: [verifiable credentials, agent identity, zero-trust]
+vault: ~/.paper/vaults/agent-identity
+notebook: https://notebooklm.google.com/notebook/abc123
+phase: discover
+```
+
+### Obsidian Vault
+
+The vault is your research knowledge base, viewable in Obsidian:
+
+```
+vault/
+  sources/      ← Original papers (PDFs, web clips)
+  notes/        ← Per-paper reading notes (summary, findings, quotes)
+  concepts/     ← Cross-paper synthesis articles with wikilinks
+  questions/    ← Research Q&A (Claude + NotebookLM conversations)
+  insights/     ← Your original ideas and hypotheses
+  CATALOG.md    ← AI-readable index (auto-maintained)
+  .obsidian/    ← Obsidian config with bookmarks
+```
+
+**Workflow:** Papers flow into `sources/` via `/paper discover` or manual drop. `/paper digest` does two passes: first creating per-paper `notes/`, then synthesizing cross-paper `concepts/`. `/paper ask` queries everything and files answers to `questions/`. Original ideas go to `insights/`. `/paper check` finds gaps and suggests improvements.
+
+### Architecture
+
+- **Hybrid** — SKILL.md files (Claude's instructions) + Python scripts (data processing)
+- **Quality rubrics** — Every phase has standards, anti-patterns, and failure recovery
+- **Binary evals** — Automated pass/fail quality checks per phase
+- **Self-optimization** — Prompt mutation loops that keep improvements, revert regressions
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for details.
 
