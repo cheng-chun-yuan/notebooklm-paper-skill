@@ -47,7 +47,6 @@ def ingest_directory(vault_dir: Path, source_dir: Path):
 
 def main():
     """CLI: vault init|ingest|index."""
-    from scripts.core.dotpaper import find_dotpaper, load_dotpaper
     from scripts.config import get_vault_dir
 
     if len(sys.argv) < 2:
@@ -57,22 +56,15 @@ def main():
     command = sys.argv[1]
     args = sys.argv[2:]
 
-    vault_dir = None
-    dp_dir = find_dotpaper(Path.cwd())
-    if dp_dir:
-        dp = load_dotpaper(dp_dir)
-        if dp and dp.get("vault"):
-            vault_dir = Path(dp["vault"])
-
     if command == "init":
-        vault_dir = Path(args[0]) if args else (vault_dir or get_vault_dir())
+        vault_dir = Path(args[0]) if args else get_vault_dir()
         init_vault(vault_dir)
         print(f"Vault initialized at {vault_dir}")
     elif command == "ingest":
         if not args:
             print("Usage: obsidian_handler.py ingest <file-or-directory>")
             sys.exit(1)
-        vault_dir = vault_dir or get_vault_dir()
+        vault_dir = get_vault_dir()
         source = Path(args[0])
         if source.is_dir():
             ingest_directory(vault_dir, source)
@@ -82,7 +74,7 @@ def main():
             print(f"Not found: {source}")
             sys.exit(1)
     elif command == "index":
-        vault_dir = vault_dir or get_vault_dir()
+        vault_dir = get_vault_dir()
         catalog = build_catalog(vault_dir)
         write_catalog(vault_dir, catalog)
         print(f"CATALOG.md rebuilt at {vault_dir}")
