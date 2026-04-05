@@ -9,54 +9,8 @@ description: "Research paper pipeline in 8 phases: Discover → Position → Arc
 
 ```bash
 PAPER_SKILL=~/.claude/skills/paper
-VENV=$PAPER_SKILL/.venv
-PY="$VENV/bin/python3"
-if [ ! -d "$VENV" ] || [ ! -x "$PY" ]; then
-  echo "NEEDS_SETUP"
-else
-  echo "READY"
-fi
-
-_VERSION=$(cat "$PAPER_SKILL/VERSION" 2>/dev/null || echo "0.0.0")
-_UPD=$("$PAPER_SKILL/bin/paper-update-check" 2>/dev/null || true)
-echo "VERSION: $_VERSION"
-[ -n "$_UPD" ] && echo "$_UPD"
-
-mkdir -p ~/.paper/sessions ~/.paper/projects
-touch ~/.paper/sessions/"$PPID"
-find ~/.paper/sessions -mmin +120 -type f -delete 2>/dev/null || true
-_AUTH=$("$PY" "$PAPER_SKILL/scripts/run.py" auth status --quiet 2>/dev/null || echo "NO_AUTH")
-echo "AUTH: $_AUTH"
-
-# Read .paper if present
-if [ -f .paper ]; then
-  _PROJ_NAME=$(grep '^project:' .paper | awk '{print $2}')
-  _PHASE=$(grep '^phase:' .paper | awk '{print $2}')
-  _VAULT=$(grep '^vault:' .paper | awk '{print $2}')
-  _NOTEBOOK=$(grep '^notebook:' .paper | awk '{$1=""; print substr($0,2)}')
-  echo "PROJECT: $_PROJ_NAME — Phase: $_PHASE"
-  [ -n "$_VAULT" ] && echo "VAULT: $_VAULT"
-  [ -n "$_NOTEBOOK" ] && echo "NOTEBOOK: $_NOTEBOOK"
-else
-  # Fallback to legacy project.json
-  _PROJECT=$("$PY" -c "
-import pathlib, json
-projects_dir = pathlib.Path.home() / '.paper' / 'projects'
-if not projects_dir.exists():
-    print('none'); exit()
-for pf in projects_dir.glob('*/project.json'):
-    try:
-        p = json.loads(pf.read_text())
-        if p.get('active'):
-            print(f\"{p['name']} — Phase {p['current_phase']}/8 ({p['phase_name']})\"); exit()
-    except: pass
-print('none')
-" 2>/dev/null || echo "none")
-  echo "PROJECT: $_PROJECT"
-fi
-
-_FEEDBACK=$("$PAPER_SKILL/bin/paper-config" get feedback_mode 2>/dev/null || echo "on")
-echo "FEEDBACK: $_FEEDBACK"
+PY=$PAPER_SKILL/.venv/bin/python3
+$PY $PAPER_SKILL/scripts/core/preamble.py
 ```
 
 If `NEEDS_SETUP`: tell user "paper-skill needs one-time setup (~30s). OK?" then run the setup script.
