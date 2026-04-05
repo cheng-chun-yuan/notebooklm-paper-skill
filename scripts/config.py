@@ -22,6 +22,24 @@ DOWNLOADS_FILE = DATA_DIR / "downloads.json"
 AUTH_INFO_FILE = DATA_DIR / "auth_info.json"
 CONFIG_FILE = DATA_DIR / "config.json"
 
+# Vault paths
+VAULTS_DIR = DATA_DIR / "vaults"
+
+
+def get_vault_dir() -> Path:
+    """Get vault dir from .paper in cwd, or config, or default."""
+    from scripts.core.dotpaper import find_dotpaper, load_dotpaper
+    dp_dir = find_dotpaper(Path.cwd())
+    if dp_dir:
+        dp = load_dotpaper(dp_dir)
+        if dp and dp.get("vault"):
+            return Path(dp["vault"])
+    config = load_config()
+    if config.get("vault_path"):
+        return Path(config["vault_path"])
+    return VAULTS_DIR / "default"
+
+
 # notebooklm-py auth storage
 NOTEBOOKLM_STORAGE_PATH = Path.home() / ".notebooklm" / "storage_state.json"
 
