@@ -8,8 +8,7 @@ phase: 7
 
 ## Input
 
-- `review-report.md` (from critique phase)
-- `audit-report.md` (from critique phase)
+- `critique-report.md` (from critique phase)
 - `drafts/v1-draft.md` (or latest draft)
 - All prior artifacts for reference
 
@@ -27,7 +26,7 @@ Every refine output is evaluated on these dimensions:
 | Dimension | Excellent | Acceptable | Poor |
 |-----------|-----------|------------|------|
 | **Specificity** | Each fix references exact section, paragraph, and the original issue ID from triage. Changelog entries say "Changed Section 3.2, paragraph 1: replaced 'significantly outperforms' with 'achieves comparable performance (within 1.2%)' per Reviewer B Point 2." | Fixes reference sections but not exact paragraphs. Changelog entries are brief but identifiable. | Vague changelog. "Improved evaluation section." No way to verify what changed. |
-| **Traceability** | Every change in v2-changelog.md maps to a specific issue from review-report.md or audit-report.md by ID. No orphan changes. | Most changes are traced. A few fixes lack clear origin. | Changes appear without connection to any reported issue. |
+| **Traceability** | Every change in v2-changelog.md maps to a specific issue from critique-report.md by ID. No orphan changes. | Most changes are traced. A few fixes lack clear origin. | Changes appear without connection to any reported issue. |
 | **Completeness** | All P0 and P1 issues addressed. P2 issues mostly addressed. Remaining issues explicitly listed with rationale for deferral. | All P0 addressed. Most P1 addressed. Some P2 addressed. | P0 issues left unaddressed without explanation. |
 | **Issue coverage** | All P0 and P1 issues from triage are addressed. P2 issues are mostly addressed. Remaining issues are explicitly listed in "Remaining Issues" with a reason for deferral and a suggested next step. | P0 fully addressed. P1 mostly addressed. Remaining list exists but reasons are thin. | P0 or P1 issues silently dropped. No remaining issues list. |
 | **Regression safety** | After fixes, re-check shows no new unsupported claims, scorecard shows improvement (not regression), and no section contradicts another. Explicitly confirms: "Re-check found no regressions." | Re-check performed. Minor new issues noted and flagged. | No re-check performed. Fixes introduce new contradictions or unsupported claims. |
@@ -97,7 +96,7 @@ The v2-changelog.md follows this shape (content is illustrative, not prescriptiv
 
 ### Step 1 — Triage Issues
 
-Read `review-report.md` and `audit-report.md`. Build a unified issue list:
+Read `critique-report.md`. Build a unified issue list:
 
 1. Extract all issues from the review (priority-ranked list from meta-review)
 2. Extract all issues from the audit ("Fix before submit" items first, then strategic advice)
@@ -112,7 +111,7 @@ Present the triaged list to the user before proceeding. Ask: "Does this prioriti
 
 ### Step 2 — Address Review Concerns
 
-For each reviewer concern from review-report.md, address it point-by-point:
+For each reviewer concern from critique-report.md, address it point-by-point:
 
 **Format for each fix:**
 ```
@@ -128,7 +127,7 @@ Work through concerns in priority order (P0 first).
 
 ### Step 3 — Address Audit Findings
 
-For each audit finding from audit-report.md:
+For each audit finding from critique-report.md:
 
 1. **Structural issues**: Restructure sections, fix logical gaps, align abstract with evaluation
 2. **Claims vs Reality**: Fix overclaimed/unsupported claims — either add evidence or weaken the claim

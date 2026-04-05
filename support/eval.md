@@ -22,13 +22,14 @@ If the user specifies a phase (e.g., `/paper eval write`), evaluate that phase o
 If no phase specified, evaluate all phases that have artifacts.
 
 Map phase names to numbers:
-- position → 04
-- architect → 05
-- write → 07
-- review → 08
-- audit → 09
-- refine → 10
-- venue → 11
+- discover → 01
+- position → 02
+- architect → 03
+- evaluate → 04
+- write → 05
+- critique → 06
+- refine → 07
+- ship → 08
 
 ### Step 2 — Run eval
 
