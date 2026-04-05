@@ -1,11 +1,11 @@
 ---
 name: paper-digest
-description: "Compile wiki articles from raw papers. Reads raw/, identifies concepts, writes wiki/ with summaries, wikilinks, and source attribution."
+description: "Two-pass knowledge compiler. Reading pass: sources/ → notes/ (per-paper summaries). Synthesis pass: notes/ → concepts/ (cross-paper understanding)."
 ---
 
 # /paper digest — Organize Your Knowledge
 
-Read all unprocessed papers in `raw/` and compile them into wiki articles — one per key concept. Each article has a summary, key points, cross-links, and traces back to source papers.
+Two-pass knowledge compiler. **Reading pass**: read each unprocessed paper in `sources/` and write a `notes/` entry. **Synthesis pass**: look across all notes, create or update `concepts/` entries with cross-paper understanding.
 
 ## Setup
 
@@ -30,54 +30,85 @@ If VAULT is empty, tell user to run `/paper init` first.
 cat "$VAULT/CATALOG.md"
 ```
 
-Understand current state: which papers exist in raw/, which wiki articles already exist, which Q&A sessions are recorded.
+Understand current state: which papers exist in sources/, which notes have been written, which concepts exist, and which questions/insights are recorded.
 
-### Step 2: Identify unprocessed papers
+### Step 2: Identify unprocessed sources
 
-Compare raw/ entries against wiki/ source lists. Papers in raw/ not referenced by any wiki article's `sources:` field are unprocessed.
+Compare sources/ entries against notes/. A source `sources/{author}-{year}-{short-title}.{ext}` is unprocessed if no matching `notes/{author}-{year}-{short-title}.md` exists.
 
-### Step 3: Read unprocessed papers
+### Step 3: Reading pass — Write notes
 
-For each unprocessed paper:
-1. Read full content: `cat "$VAULT/raw/{filename}"`
-2. Extract key concepts (2-5 per paper)
-3. Note methods, claims, findings
-4. Identify connections to existing wiki articles
+For each unprocessed source:
+1. Read full content: `cat "$VAULT/sources/{filename}"`
+2. Write `notes/{author}-{year}-{short-title}.md`:
 
-### Step 4: Write wiki articles
+```markdown
+---
+title: "{Paper Title}"
+paper: "sources/{author}-{year}-{title}"
+tags: [{tags}]
+key_findings: [{finding1}, {finding2}]
+updated: {YYYY-MM-DD}
+---
 
-For each concept, create `wiki/{concept-slug}.md`:
+# {Paper Title}
+
+## Summary
+{2-3 paragraph summary in your own words}
+
+## Key Findings
+- {Finding 1 with direct quote or specific result}
+- {Finding 2}
+
+## Methods
+{Notable methods worth remembering}
+
+## Strengths & Weaknesses
+- Strength: {what's good}
+- Weakness: {what's missing or questionable}
+
+## Relevant Quotes
+> "{exact quote}" (Section X, p.Y)
+
+## Connections
+- Related to [[concepts/{concept}]] because {why}
+- Similar approach to [[notes/{other-paper}]] but {difference}
+```
+
+### Step 4: Synthesis pass — Write/update concepts
+
+Look across all notes/ entries. For each concept that spans multiple papers, create or update `concepts/{concept-name}.md`:
 
 ```markdown
 ---
 title: "{Concept Name}"
-tags: [{relevant}, {tags}]
-sources: [{raw-paper-stems}]
-related: [{other-wiki-stems}]
+tags: [{tags}]
+sources: [{notes-that-inform-this}]
+related: [{other-concept-stems}]
 updated: {YYYY-MM-DD}
 ---
 
 # {Concept Name}
 
 ## Overview
-{2-3 paragraph summary}
+{2-3 paragraph synthesis across papers}
 
 ## Key Points
-- {Essential facts as bullet points}
+- {Facts drawn from multiple sources}
 
 ## Connections
-- [[wiki/{related-concept}]] — {relationship}
+- [[concepts/{related}]] — {relationship}
 
 ## Sources
-- [[raw/{paper-filename}]] — {what this paper contributes}
+- [[notes/{paper-note}]] — {what this paper contributes}
 ```
 
-### Step 5: Update existing articles
+### Step 5: Update existing concepts
 
 When a new paper adds to an existing concept:
-1. Read the existing wiki article
+1. Read the existing concept article
 2. Add new information under appropriate sections
-3. Append the paper to `sources:` frontmatter
+3. Append the note to `sources:` frontmatter
 4. Add new `[[wikilinks]]` under Connections
 5. Update `updated:` date
 
@@ -89,9 +120,9 @@ $PY $PAPER_SKILL/scripts/run.py vault index
 
 ## Rules
 
-- **Never fabricate** — Only write what raw papers say. Quote directly when uncertain.
-- **Always link** — Use `[[wikilinks]]` between wiki articles and back to raw papers.
-- **Always attribute** — Every claim traces to a specific raw/ source.
+- **Never fabricate** — Only write what source papers say. Quote directly when uncertain.
+- **Always link** — Use `[[wikilinks]]` between concepts, notes, and back to sources.
+- **Always attribute** — Every claim traces to a specific notes/ entry and its source.
 - **Incremental** — Don't rewrite unchanged articles. Only add new information.
 - **Reuse tags** — Check existing tags in CATALOG.md before creating new ones.
 
@@ -99,6 +130,6 @@ $PY $PAPER_SKILL/scripts/run.py vault index
 
 When user runs `/paper digest`:
 
-**A) Full digest** — Process all uncompiled papers (default)
-**B) Single paper** — Specify which: `/paper digest attention.md`
-**C) Refresh** — Re-scan all raw/ and enrich existing wiki articles with new connections
+**A) Full digest** — Reading pass + synthesis pass for all unprocessed sources (default)
+**B) Single paper** — Reading pass only for one paper: `/paper digest vaswani-2017-attention.pdf`
+**C) Synthesize** — Synthesis pass only: update concepts from existing notes (skip reading pass)
