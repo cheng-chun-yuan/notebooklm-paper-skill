@@ -12,7 +12,7 @@ Ask questions against your knowledge base. Claude searches wiki/ and raw/ to syn
 ```bash
 PAPER_SKILL=~/.claude/skills/paper
 PY=$PAPER_SKILL/.venv/bin/python3
-VAULT=$(grep '^vault:' .paper | awk '{print $2}')
+VAULT=$($PY -c "from scripts.config import get_vault_dir; print(get_vault_dir())")
 ```
 
 ## Workflow

@@ -12,7 +12,7 @@ Diagnose your knowledge base: find unprocessed papers, broken wikilinks, thin ar
 ```bash
 PAPER_SKILL=~/.claude/skills/paper
 PY=$PAPER_SKILL/.venv/bin/python3
-VAULT=$(grep '^vault:' .paper | awk '{print $2}')
+VAULT=$($PY -c "from scripts.config import get_vault_dir; print(get_vault_dir())")
 ```
 
 ## Checks

@@ -511,8 +511,8 @@ If you get stuck at any stage, use these recovery strategies:
 After papers are downloaded and analyzed, check for an active vault:
 
 ```bash
-VAULT=$(grep '^vault:' .paper 2>/dev/null | awk '{print $2}')
-if [ -d "$VAULT/raw" ]; then
+VAULT=$($PY -c "from scripts.config import get_vault_dir; print(get_vault_dir())" 2>/dev/null)
+if [ -n "$VAULT" ] && [ -d "$VAULT/raw" ]; then
   echo "VAULT_ACTIVE"
 fi
 ```

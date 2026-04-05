@@ -17,10 +17,10 @@ PY=$PAPER_SKILL/.venv/bin/python3
 Read `.paper` in the current directory to find the vault path:
 
 ```bash
-VAULT=$(grep '^vault:' .paper | awk '{print $2}')
+VAULT=$($PY -c "from scripts.config import get_vault_dir; print(get_vault_dir())")
 ```
 
-If no `.paper` found, tell user to run `/paper init` first.
+If VAULT is empty, tell user to run `/paper init` first.
 
 ## Workflow
 
