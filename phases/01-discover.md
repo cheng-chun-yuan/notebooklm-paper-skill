@@ -506,6 +506,26 @@ If you get stuck at any stage, use these recovery strategies:
 - **No useful cross-domain methods found**: Skip Stage C entirely and proceed to Phase 2: Position with within-field methods. Not every project needs cross-domain scouting — some gaps are best addressed with deeper work within the field.
 - **Papers are behind paywalls**: Use arXiv preprints, check authors' personal pages, or use Semantic Scholar's open access filter. If a key paper is inaccessible, note it in the field map and rely on citing papers for context.
 
+### Vault Integration
+
+After papers are downloaded and analyzed, check for an active vault:
+
+```bash
+VAULT=$(grep '^vault:' .paper 2>/dev/null | awk '{print $2}')
+if [ -d "$VAULT/raw" ]; then
+  echo "VAULT_ACTIVE"
+fi
+```
+
+If vault is active, offer: "Ingest discovered papers into your knowledge base? (Y/n)"
+
+If yes:
+```bash
+$PY $PAPER_SKILL/scripts/run.py vault ingest <papers-directory>
+```
+
+This copies downloaded papers into `vault/raw/` and rebuilds CATALOG.md. The user can then run `/paper digest` to compile wiki articles from these papers.
+
 ## Phase Transition
 
 When all applicable health checks pass:
