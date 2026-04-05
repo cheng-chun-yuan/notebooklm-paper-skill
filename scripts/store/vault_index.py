@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Vault index builder — scans an Obsidian vault's raw/, wiki/, qa/
-directories and builds a CATALOG.md index file.
+Vault index builder — scans an Obsidian vault's sources/, notes/, concepts/,
+questions/, insights/ directories and builds a CATALOG.md index file.
 """
 
 from __future__ import annotations
@@ -44,20 +44,20 @@ def _get_list(fm: dict, key: str) -> list:
     return val if isinstance(val, list) else []
 
 
-def scan_raw_dir(raw_dir: Path) -> list[dict]:
-    """Scan raw/ directory for papers and documents.
+def scan_sources_dir(sources_dir: Path) -> list[dict]:
+    """Scan sources/ directory for papers and documents.
 
     Returns entries with file, title, tags, authors, year.
     """
-    if not raw_dir.exists():
+    if not sources_dir.exists():
         return []
 
     entries = []
-    for f in sorted(raw_dir.iterdir()):
+    for f in sorted(sources_dir.iterdir()):
         if f.is_dir():
             continue
         entry = {
-            "file": f"raw/{f.name}",
+            "file": f"sources/{f.name}",
             "title": f.stem,
             "tags": [],
             "authors": [],
@@ -73,21 +73,44 @@ def scan_raw_dir(raw_dir: Path) -> list[dict]:
     return entries
 
 
-def scan_wiki_dir(wiki_dir: Path) -> list[dict]:
-    """Scan wiki/ directory for compiled knowledge articles.
+def scan_notes_dir(notes_dir: Path) -> list[dict]:
+    """Scan notes/ directory for per-paper reading notes.
 
-    Returns entries with file, title, tags, sources.
+    Returns entries with file, title, tags, paper.
+    Naming convention: {author}-{year}-{short-title}.md
     """
-    if not wiki_dir.exists():
+    if not notes_dir.exists():
         return []
 
     entries = []
-    for f in sorted(wiki_dir.iterdir()):
+    for f in sorted(notes_dir.iterdir()):
         if f.is_dir() or f.suffix != ".md":
             continue
         fm = _parse_frontmatter(f.read_text(encoding="utf-8"))
         entries.append({
-            "file": f"wiki/{f.name}",
+            "file": f"notes/{f.name}",
+            "title": fm.get("title", f.stem),
+            "tags": _get_list(fm, "tags"),
+            "paper": fm.get("paper", ""),
+        })
+    return entries
+
+
+def scan_concepts_dir(concepts_dir: Path) -> list[dict]:
+    """Scan concepts/ directory for cross-paper synthesis articles.
+
+    Returns entries with file, title, tags, sources.
+    """
+    if not concepts_dir.exists():
+        return []
+
+    entries = []
+    for f in sorted(concepts_dir.iterdir()):
+        if f.is_dir() or f.suffix != ".md":
+            continue
+        fm = _parse_frontmatter(f.read_text(encoding="utf-8"))
+        entries.append({
+            "file": f"concepts/{f.name}",
             "title": fm.get("title", f.stem),
             "tags": _get_list(fm, "tags"),
             "sources": _get_list(fm, "sources"),
@@ -95,21 +118,21 @@ def scan_wiki_dir(wiki_dir: Path) -> list[dict]:
     return entries
 
 
-def scan_qa_dir(qa_dir: Path) -> list[dict]:
-    """Scan qa/ directory for Q&A sessions.
+def scan_questions_dir(questions_dir: Path) -> list[dict]:
+    """Scan questions/ directory for Q&A sessions.
 
     Returns entries with file, title, source, date, tags.
     """
-    if not qa_dir.exists():
+    if not questions_dir.exists():
         return []
 
     entries = []
-    for f in sorted(qa_dir.iterdir()):
+    for f in sorted(questions_dir.iterdir()):
         if f.is_dir() or f.suffix != ".md":
             continue
         fm = _parse_frontmatter(f.read_text(encoding="utf-8"))
         entries.append({
-            "file": f"qa/{f.name}",
+            "file": f"questions/{f.name}",
             "title": fm.get("title", f.stem),
             "source": fm.get("source", ""),
             "date": str(fm.get("date", "")),
@@ -118,20 +141,51 @@ def scan_qa_dir(qa_dir: Path) -> list[dict]:
     return entries
 
 
+def scan_insights_dir(insights_dir: Path) -> list[dict]:
+    """Scan insights/ directory for original ideas and hypotheses.
+
+    Returns entries with file, title, tags, date, based_on.
+    Naming convention: {YYYY-MM-DD}-{insight-slug}.md
+    """
+    if not insights_dir.exists():
+        return []
+
+    entries = []
+    for f in sorted(insights_dir.iterdir()):
+        if f.is_dir() or f.suffix != ".md":
+            continue
+        fm = _parse_frontmatter(f.read_text(encoding="utf-8"))
+        entries.append({
+            "file": f"insights/{f.name}",
+            "title": fm.get("title", f.stem),
+            "tags": _get_list(fm, "tags"),
+            "date": str(fm.get("date", "")),
+            "based_on": _get_list(fm, "based_on"),
+        })
+    return entries
+
+
 def build_catalog(vault_dir: Path) -> str:
     """Build full CATALOG.md content from vault directories."""
-    raw_entries = scan_raw_dir(vault_dir / "raw")
-    wiki_entries = scan_wiki_dir(vault_dir / "wiki")
-    qa_entries = scan_qa_dir(vault_dir / "qa")
+    sources_entries = scan_sources_dir(vault_dir / "sources")
+    notes_entries = scan_notes_dir(vault_dir / "notes")
+    concepts_entries = scan_concepts_dir(vault_dir / "concepts")
+    questions_entries = scan_questions_dir(vault_dir / "questions")
+    insights_entries = scan_insights_dir(vault_dir / "insights")
 
     today = date.today().isoformat()
     lines: list[str] = []
 
     # Frontmatter
     lines.append("---")
-    lines.append("purpose: AI-readable index for locating papers, wiki articles, and Q&A sessions")
+    lines.append("purpose: AI-readable index for locating sources, notes, concepts, questions, and insights")
     lines.append(f"updated: {today}")
-    lines.append(f"stats: {len(raw_entries)} raw, {len(wiki_entries)} wiki, {len(qa_entries)} qa")
+    stats = (
+        f"{len(sources_entries)} sources, {len(notes_entries)} notes, "
+        f"{len(concepts_entries)} concepts, {len(questions_entries)} questions, "
+        f"{len(insights_entries)} insights"
+    )
+    lines.append(f"stats: {stats}")
     lines.append("---")
     lines.append("")
     lines.append("# Research Catalog")
@@ -141,10 +195,10 @@ def build_catalog(vault_dir: Path) -> str:
     lines.append("---")
     lines.append("")
 
-    # Raw section
-    lines.append("## Raw — Source Papers & Documents")
+    # Sources section
+    lines.append("## Sources — Original Papers & Documents")
     lines.append("")
-    for e in raw_entries:
+    for e in sources_entries:
         lines.append(f"### {e['title']}")
         lines.append(f"- **File**: `{e['file']}`")
         if e["authors"]:
@@ -158,10 +212,25 @@ def build_catalog(vault_dir: Path) -> str:
     lines.append("---")
     lines.append("")
 
-    # Wiki section
-    lines.append("## Wiki — Compiled Knowledge")
+    # Notes section
+    lines.append("## Notes — Paper Reading Notes")
     lines.append("")
-    for e in wiki_entries:
+    for e in notes_entries:
+        lines.append(f"### {e['title']}")
+        lines.append(f"- **File**: `{e['file']}`")
+        if e["paper"]:
+            lines.append(f"- **Paper**: [[{e['paper']}]]")
+        if e["tags"]:
+            lines.append(f"- **Tags**: {', '.join(f'`{t}`' for t in e['tags'])}")
+        lines.append("")
+
+    lines.append("---")
+    lines.append("")
+
+    # Concepts section
+    lines.append("## Concepts — Cross-Paper Synthesis")
+    lines.append("")
+    for e in concepts_entries:
         lines.append(f"### {e['title']}")
         lines.append(f"- **File**: `{e['file']}`")
         if e["tags"]:
@@ -173,10 +242,10 @@ def build_catalog(vault_dir: Path) -> str:
     lines.append("---")
     lines.append("")
 
-    # QA section
-    lines.append("## Q&A — Research Questions & Answers")
+    # Questions section
+    lines.append("## Questions — Research Q&A")
     lines.append("")
-    for e in qa_entries:
+    for e in questions_entries:
         lines.append(f"### {e['title']}")
         lines.append(f"- **File**: `{e['file']}`")
         if e["source"]:
@@ -185,6 +254,23 @@ def build_catalog(vault_dir: Path) -> str:
             lines.append(f"- **Date**: {e['date']}")
         if e["tags"]:
             lines.append(f"- **Tags**: {', '.join(f'`{t}`' for t in e['tags'])}")
+        lines.append("")
+
+    lines.append("---")
+    lines.append("")
+
+    # Insights section
+    lines.append("## Insights — Original Ideas & Hypotheses")
+    lines.append("")
+    for e in insights_entries:
+        lines.append(f"### {e['title']}")
+        lines.append(f"- **File**: `{e['file']}`")
+        if e["date"]:
+            lines.append(f"- **Date**: {e['date']}")
+        if e["tags"]:
+            lines.append(f"- **Tags**: {', '.join(f'`{t}`' for t in e['tags'])}")
+        if e["based_on"]:
+            lines.append(f"- **Based on**: {', '.join(f'[[{b}]]' for b in e['based_on'])}")
         lines.append("")
 
     return "\n".join(lines)

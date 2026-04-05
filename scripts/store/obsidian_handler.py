@@ -16,9 +16,9 @@ OBSIDIAN_PRESET = Path(__file__).parent.parent.parent / "obsidian-preset" / ".ob
 
 
 def init_vault(vault_dir: Path):
-    """Initialize vault with raw/wiki/qa and Obsidian config."""
+    """Initialize vault with sources/notes/concepts/questions/insights and Obsidian config."""
     vault_dir.mkdir(parents=True, exist_ok=True)
-    for sub in ("raw", "wiki", "qa"):
+    for sub in ("sources", "notes", "concepts", "questions", "insights"):
         (vault_dir / sub).mkdir(exist_ok=True)
     obsidian_dir = vault_dir / ".obsidian"
     if not obsidian_dir.exists() and OBSIDIAN_PRESET.exists():
@@ -28,8 +28,8 @@ def init_vault(vault_dir: Path):
 
 
 def ingest_paper(vault_dir: Path, source: Path):
-    """Copy a paper into raw/ and rebuild catalog."""
-    dest = vault_dir / "raw" / source.name
+    """Copy a paper into sources/ and rebuild catalog."""
+    dest = vault_dir / "sources" / source.name
     if dest.exists():
         return
     shutil.copy2(source, dest)
