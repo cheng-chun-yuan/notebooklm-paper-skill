@@ -4,6 +4,12 @@
 import shutil
 import sys
 from pathlib import Path
+
+# Ensure project root is on sys.path for scripts.* imports
+_PROJECT_ROOT = Path(__file__).parent.parent.parent
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+
 from scripts.store.vault_index import build_catalog, write_catalog
 
 OBSIDIAN_PRESET = Path(__file__).parent.parent.parent / "obsidian-preset" / ".obsidian"

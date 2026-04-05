@@ -24,6 +24,7 @@ SCRIPT_ALIASES = {
     "cleanup": "utils/cleanup_manager.py",
     "eval": "eval/eval_runner.py",
     "optimize": "optimize/backup_manager.py",
+    "vault": "store/obsidian_handler.py",
 }
 
 
