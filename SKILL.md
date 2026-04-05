@@ -28,7 +28,18 @@ find ~/.paper/sessions -mmin +120 -type f -delete 2>/dev/null || true
 _AUTH=$("$PY" "$PAPER_SKILL/scripts/run.py" auth status --quiet 2>/dev/null || echo "NO_AUTH")
 echo "AUTH: $_AUTH"
 
-_PROJECT=$("$PY" -c "
+# Read .paper if present
+if [ -f .paper ]; then
+  _PROJ_NAME=$(grep '^project:' .paper | awk '{print $2}')
+  _PHASE=$(grep '^phase:' .paper | awk '{print $2}')
+  _VAULT=$(grep '^vault:' .paper | awk '{print $2}')
+  _NOTEBOOK=$(grep '^notebook:' .paper | awk '{$1=""; print substr($0,2)}')
+  echo "PROJECT: $_PROJ_NAME — Phase: $_PHASE"
+  [ -n "$_VAULT" ] && echo "VAULT: $_VAULT"
+  [ -n "$_NOTEBOOK" ] && echo "NOTEBOOK: $_NOTEBOOK"
+else
+  # Fallback to legacy project.json
+  _PROJECT=$("$PY" -c "
 import pathlib, json
 projects_dir = pathlib.Path.home() / '.paper' / 'projects'
 if not projects_dir.exists():
@@ -41,7 +52,8 @@ for pf in projects_dir.glob('*/project.json'):
     except: pass
 print('none')
 " 2>/dev/null || echo "none")
-echo "PROJECT: $_PROJECT"
+  echo "PROJECT: $_PROJECT"
+fi
 
 _FEEDBACK=$("$PAPER_SKILL/bin/paper-config" get feedback_mode 2>/dev/null || echo "on")
 echo "FEEDBACK: $_FEEDBACK"
@@ -60,29 +72,94 @@ Paper Skill — Research Paper Pipeline
 
 Where are you in your research?
 
-A) Starting fresh — "I have a topic but haven't read any papers yet"
+A) Starting fresh — "I have a topic but haven't started"
+   → /paper init
+
+B) Finding papers — "I need to survey the field"
    → /paper discover
 
-B) I know the field — "I've read papers, need to find my angle"
-   → /paper position
+C) Organizing notes — "I have papers, need to digest them"
+   → /paper digest
 
-C) I have my angle — "Contribution is clear, need to design it"
-   → /paper architect
+D) Have a question — "I want to ask something about my research"
+   → /paper ask
 
-D) I have results — "Method works, need to write it up"
-   → /paper write
+E) Check my progress — "How's my knowledge base looking?"
+   → /paper check
 
-E) Draft exists — "Paper is written, needs feedback"
-   → /paper critique
+F) Ready to write — "I know my angle, time to write the paper"
+   → /paper position → architect → evaluate → write → critique → refine → ship
 
-F) Continue previous project
-   → list projects from ~/.paper/projects/
+G) Continue previous project
+   → list .paper files or projects from ~/.paper/projects/
 ```
 
 When user picks an option:
 1. If no active project, create one: ask for project name, then run `$PY -c "from scripts.config import create_project; create_project('{name}', working_directory='$(pwd)')"`
 2. Each entry point runs a health check on prior phases. If jumping ahead (e.g., `/paper write` without discover), flag it but don't block.
 3. Read the corresponding sub-skill SKILL.md and follow its instructions.
+
+## /paper init — First-Time Setup
+
+Walk the user through project setup conversationally:
+
+1. **"What's your research topic?"**
+   → topic field
+
+2. **"What's your goal? (one sentence)"**
+   → goal field
+
+3. **"Targeting a venue?"**
+   A) Conference — ask name + deadline
+   B) Journal — ask name
+   C) Workshop — ask name + deadline
+   D) Not sure yet / preprint
+   → venue, venue_type, deadline fields
+
+4. **"Any keywords to guide paper discovery? (comma-separated)"**
+   → keywords field
+
+5. **"Do you have a NotebookLM notebook? (paste URL or skip)"**
+   → notebook field. If no auth: suggest `/paper auth setup` first.
+
+6. **"Custom vault path? (default: ~/.paper/vaults/{project-name})"**
+   → vault field
+
+Create .paper:
+```bash
+$PY -c "
+from scripts.core.dotpaper import create_dotpaper
+from pathlib import Path
+create_dotpaper(
+    Path('.'),
+    project='{project}',
+    topic='{topic}',
+    goal='{goal}',
+    venue='{venue}',
+    venue_type='{venue_type}',
+    deadline='{deadline}',
+    notebook='{notebook}',
+    keywords={keywords},
+    vault='{vault}',
+)
+"
+```
+
+Initialize vault:
+```bash
+$PY $PAPER_SKILL/scripts/run.py vault init "$VAULT"
+```
+
+Show:
+```
+Project "{project}" initialized!
+
+.paper created in current directory
+Vault at {vault} — open in Obsidian
+{NotebookLM linked / NotebookLM skipped}
+
+Ready! Run /paper discover to start surveying the field.
+```
 
 ## Progress Tracker
 
@@ -130,6 +207,10 @@ $PY $PAPER_SKILL/scripts/run.py matrix show 2>/dev/null
 | `/paper update` | `support/update.md` | Utility |
 | `/paper eval` | `support/eval.md` | Script-backed |
 | `/paper optimize` | `support/optimize.md` | SKILL.md-only (autoresearch) |
+| `/paper init` | `SKILL.md` (inline) | Conversational setup |
+| `/paper digest` | `support/digest.md` | SKILL.md-only |
+| `/paper ask` | `support/ask.md` | SKILL.md-only |
+| `/paper check` | `support/check.md` | SKILL.md-only |
 
 All paths are relative to the paper-skill root directory.
 
@@ -162,9 +243,22 @@ Rate this phase? (1-5, or skip)
 If user rates < 4: ask "What would make it better?" and save via `$PAPER_SKILL/bin/paper-feedback {phase} {rating} "{comment}"`.
 If user rates 5: ask "What worked well?" and save positive feedback too.
 
-After transition, update project.json:
+After transition, update project state:
 ```bash
-$PY -c "
+# Update .paper if present, fallback to project.json
+if [ -f .paper ]; then
+  $PY -c "
+from pathlib import Path
+from scripts.core.dotpaper import find_dotpaper, load_dotpaper, save_dotpaper
+dp_dir = find_dotpaper(Path('.'))
+if dp_dir:
+    dp = load_dotpaper(dp_dir)
+    dp['phases_completed'].append('{current_phase}')
+    dp['phase'] = '{next_phase_name}'
+    save_dotpaper(dp_dir, dp)
+"
+else
+  $PY -c "
 from scripts.config import load_project, save_project, get_active_project
 p = get_active_project()
 p['phases_completed'].append('{current_phase}')
@@ -172,6 +266,7 @@ p['current_phase'] = {next_phase_number}
 p['phase_name'] = '{next_phase_name}'
 save_project(p)
 "
+fi
 ```
 
 ## Backtrack Triggers
