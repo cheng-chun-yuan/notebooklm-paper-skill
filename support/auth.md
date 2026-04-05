@@ -11,12 +11,12 @@ Manages NotebookLM authentication via notebooklm-py.
 
 ```bash
 PY=~/.claude/skills/paper/.venv/bin/python3
-SKILL=~/.claude/skills/paper
+PAPER_SKILL=~/.claude/skills/paper
 
-$PY $SKILL/scripts/run.py auth status   # Check auth state
-$PY $SKILL/scripts/run.py auth setup    # Interactive login (opens browser)
-$PY $SKILL/scripts/run.py auth reauth   # Re-authenticate expired session
-$PY $SKILL/scripts/run.py auth clear    # Remove stored credentials
+$PY $PAPER_SKILL/scripts/run.py auth status   # Check auth state
+$PY $PAPER_SKILL/scripts/run.py auth setup    # Interactive login (opens browser)
+$PY $PAPER_SKILL/scripts/run.py auth reauth   # Re-authenticate expired session
+$PY $PAPER_SKILL/scripts/run.py auth clear    # Remove stored credentials
 ```
 
 ## Workflow

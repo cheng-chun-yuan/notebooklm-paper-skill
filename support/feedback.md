@@ -10,9 +10,9 @@ Collects user ratings and comments after each phase to improve the skill over ti
 ## Command
 
 ```bash
-SKILL=~/.claude/skills/paper
+PAPER_SKILL=~/.claude/skills/paper
 
-$SKILL/bin/paper-feedback <phase> <rating> "<comment>"
+$PAPER_SKILL/bin/paper-feedback <phase> <rating> "<comment>"
 ```
 
 ### Parameters

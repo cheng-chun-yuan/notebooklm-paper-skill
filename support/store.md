@@ -11,20 +11,20 @@ Handles NotebookLM notebook management — uploading PDFs, listing/searching not
 
 ```bash
 PY=~/.claude/skills/paper/.venv/bin/python3
-SKILL=~/.claude/skills/paper
+PAPER_SKILL=~/.claude/skills/paper
 
 # Upload PDFs to a notebook
-$PY $SKILL/scripts/run.py store upload --notebook-url "..." --pdf-dir PATH
+$PY $PAPER_SKILL/scripts/run.py store upload --notebook-url "..." --pdf-dir PATH
 
 # Notebook management
-$PY $SKILL/scripts/run.py store notebook list
-$PY $SKILL/scripts/run.py store notebook add --url "..." --name "..." --topics "..."
-$PY $SKILL/scripts/run.py store notebook search --query "..."
-$PY $SKILL/scripts/run.py store notebook activate --id ID
-$PY $SKILL/scripts/run.py store notebook remove --id ID
+$PY $PAPER_SKILL/scripts/run.py store notebook list
+$PY $PAPER_SKILL/scripts/run.py store notebook add --url "..." --name "..." --topics "..."
+$PY $PAPER_SKILL/scripts/run.py store notebook search --query "..."
+$PY $PAPER_SKILL/scripts/run.py store notebook activate --id ID
+$PY $PAPER_SKILL/scripts/run.py store notebook remove --id ID
 
 # Ask a question against a notebook
-$PY $SKILL/scripts/run.py store ask --question "..." --notebook-url "..."
+$PY $PAPER_SKILL/scripts/run.py store ask --question "..." --notebook-url "..."
 ```
 
 ## Workflow

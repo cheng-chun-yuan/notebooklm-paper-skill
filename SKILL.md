@@ -150,7 +150,7 @@ $PY $PAPER_SKILL/scripts/run.py matrix show 2>/dev/null
 | `/paper architect` | `phases/03-architect.md` | SKILL.md-only |
 | `/paper evaluate` | `phases/04-evaluate.md` | Script-backed |
 | `/paper write` | `phases/05-write.md` | SKILL.md-only |
-| `/paper critique` | `phases/06-critique.md` | SKILL.md-only |
+| `/paper critique` | `phases/06-critique.md` | Script-backed |
 | `/paper refine` | `phases/07-refine.md` | SKILL.md-only |
 | `/paper ship` | `phases/08-ship.md` | SKILL.md-only |
 | `/paper auth` | `support/auth.md` | Script-backed |
@@ -251,26 +251,26 @@ Every phase exits with one of:
 
 ```bash
 PY=~/.claude/skills/paper/.venv/bin/python3
-SKILL=~/.claude/skills/paper
+PAPER_SKILL=~/.claude/skills/paper
 
 # Scorecard
-$PY $SKILL/scripts/run.py scorecard show
-$PY $SKILL/scripts/run.py scorecard add "requirement name" 0.91
-$PY $SKILL/scripts/run.py scorecard update "requirement name" met discover
+$PY $PAPER_SKILL/scripts/run.py scorecard show
+$PY $PAPER_SKILL/scripts/run.py scorecard add "requirement name" 0.91
+$PY $PAPER_SKILL/scripts/run.py scorecard update "requirement name" met discover
 
 # Claims
-$PY $SKILL/scripts/run.py claims show
-$PY $SKILL/scripts/run.py claims add "claim text" phase_name
-$PY $SKILL/scripts/run.py claims validate C1 "Table 2, row 3" strong evaluate
+$PY $PAPER_SKILL/scripts/run.py claims show
+$PY $PAPER_SKILL/scripts/run.py claims add "claim text" phase_name
+$PY $PAPER_SKILL/scripts/run.py claims validate C1 "Table 2, row 3" strong evaluate
 
 # Matrix
-$PY $SKILL/scripts/run.py matrix show
-$PY $SKILL/scripts/run.py matrix add-dim "dimension name"
-$PY $SKILL/scripts/run.py matrix add-paper "paper name"
-$PY $SKILL/scripts/run.py matrix set "paper" "dimension" true
+$PY $PAPER_SKILL/scripts/run.py matrix show
+$PY $PAPER_SKILL/scripts/run.py matrix add-dim "dimension name"
+$PY $PAPER_SKILL/scripts/run.py matrix add-paper "paper name"
+$PY $PAPER_SKILL/scripts/run.py matrix set "paper" "dimension" true
 
 # Eval
-$PY $SKILL/scripts/run.py eval run [phase_number]
-$PY $SKILL/scripts/run.py eval show [phase_number]
-$PY $SKILL/scripts/run.py eval results [phase_number]
+$PY $PAPER_SKILL/scripts/run.py eval run [phase_number]
+$PY $PAPER_SKILL/scripts/run.py eval show [phase_number]
+$PY $PAPER_SKILL/scripts/run.py eval results [phase_number]
 ```

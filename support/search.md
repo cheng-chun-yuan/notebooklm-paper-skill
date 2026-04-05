@@ -11,9 +11,9 @@ Searches for academic papers across arXiv and Semantic Scholar.
 
 ```bash
 PY=~/.claude/skills/paper/.venv/bin/python3
-SKILL=~/.claude/skills/paper
+PAPER_SKILL=~/.claude/skills/paper
 
-$PY $SKILL/scripts/run.py search --query "..." [--year-from Y] [--year-to Y] [--sources arxiv semantic_scholar] [--sort relevance] [--max-results 20]
+$PY $PAPER_SKILL/scripts/run.py search --query "..." [--year-from Y] [--year-to Y] [--sources arxiv semantic_scholar] [--sort relevance] [--max-results 20]
 ```
 
 ### Parameters

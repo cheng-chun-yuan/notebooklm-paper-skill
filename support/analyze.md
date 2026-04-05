@@ -11,9 +11,9 @@ Performs structured analysis of a research paper using the STAR framework.
 
 ```bash
 PY=~/.claude/skills/paper/.venv/bin/python3
-SKILL=~/.claude/skills/paper
+PAPER_SKILL=~/.claude/skills/paper
 
-$PY $SKILL/scripts/run.py analyze save <paper_id> <file>
+$PY $PAPER_SKILL/scripts/run.py analyze save <paper_id> <file>
 ```
 
 ## STAR Framework
@@ -118,5 +118,5 @@ After analyzing a paper, produce the following markdown document:
 1. Read the paper (from PDF, NotebookLM, or provided text)
 2. Work through each STAR section systematically
 3. Fill in the output template
-4. Save the analysis using `$PY $SKILL/scripts/run.py analyze save <paper_id> <file>`
+4. Save the analysis using `$PY $PAPER_SKILL/scripts/run.py analyze save <paper_id> <file>`
 5. If the analysis is part of a survey phase, feed results into the comparison matrix
