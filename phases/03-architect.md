@@ -1,6 +1,7 @@
 ---
 name: paper-architect
 description: Design the system or method architecture, mapping components to gaps and identifying what is novel vs adapted.
+phase: 3
 ---
 
 # /paper architect — Phase 3: Design Your Method

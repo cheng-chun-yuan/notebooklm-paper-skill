@@ -1,6 +1,7 @@
 ---
 name: paper-position
 description: Define your research contribution, novelty claims, and differentiation from closest related work.
+phase: 2
 ---
 
 # /paper position — Phase 2: Define Your Contribution

@@ -1,6 +1,7 @@
 ---
 name: paper-evaluate
 description: Design experiments, analyze results, validate claims with evidence, and update the comparison matrix and scorecard.
+phase: 4
 ---
 
 # /paper evaluate — Phase 4: Experiments and Results
