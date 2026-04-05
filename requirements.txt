@@ -11,3 +11,6 @@ semanticscholar>=0.8.0
 # HTTP client for downloads
 httpx>=0.28.0
 requests>=2.31.0
+
+# YAML config
+PyYAML>=6.0
